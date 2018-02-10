@@ -5,12 +5,12 @@
 
 public class Checker {
     int ID;
-    String color;
-    String type;
+    char color;
+    char type;
     String location;
 
-    public Checker(int i, String c, String t, String l) {
-	this.ID = i;
+    public Checker(int i, char c, char t, String l) {
+  this.ID = i;
 	this.color = c;
 	this.type = t;
 	this.location = l;
