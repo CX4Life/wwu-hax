@@ -84,9 +84,14 @@ def build_graph(args):
     init = tf.global_variables_initializer()
     return init
 
+
+def train_model():
+    pass
+
 def main():
     args = parse_args()
     init = build_graph(args)
+
 
 
 if __name__ == '__main__':
