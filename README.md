@@ -1,4 +1,11 @@
-# wwu-hax
-Repo for WWU February Hackathon for team ; DROP TABLE Teams; --
+# WWU February Hackathon
+#### ; DROP TABLE Teams; --
 
-Nothing here...
+- Wyatt Champman
+- Sara Johnson
+- Iris Larsen
+- Tim Woods
+
+Repository for code for the WWU Winter Hackathon
+
+Nothing is in here yet...
