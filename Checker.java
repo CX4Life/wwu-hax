@@ -5,38 +5,45 @@
 
 public class Checker {
     int ID;
+    int i;
+    int j;
     char color;
     char type;
-    String location;
 
-    public Checker(int i, char c, char t, String l) {
-  this.ID = i;
-	this.color = c;
-	this.type = t;
-	this.location = l;
+    public Checker(int i, char c, char t, int i, int j) {
+        this.ID = i;
+        this.color = c;
+        this.type = t;
+        this.i = i;
+        this.j = j;
     }
 
     public int getID() {
-	return this.ID;
+        return this.ID;
     }
 
-    public String getColor() {
-	return this.color;
+    public char getColor() {
+        return this.color;
     }
 
-    public String getType() {
-	return this.type;
+    public char getType() {
+        return this.type;
     }
 
-    public void setType(String newt) {
-	this.type = newt;
+    public void setType(char newt) {
+        this.type = newt;
     }
 
-    public String getLocation() {
-	return this.location;
+    public int geti() {
+        return this.i;
     }
 
-    public void setLocation(String newl) {
-	this.location = newl;
+    public int getj() {
+        return this.j;
+    }
+
+    public void setLocation(int i, int j) {
+        this.i = i;
+        this.j = j;
     }
 }
