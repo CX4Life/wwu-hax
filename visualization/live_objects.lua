@@ -50,6 +50,7 @@ function runLiveFunction(func_name,arg)
   for i,obj in ipairs(LIVE_OBJECTS[func_name]) do
     if obj and obj[func_name] then
       -- Pass in self as the first param
+      -- Takes in one additional arg. Could be used as a table for multiple args
       obj[func_name](obj,arg)
     end
   end
