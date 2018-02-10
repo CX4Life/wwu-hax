@@ -6,14 +6,13 @@ import java.util.*;
 
 public class Game {
 
-    Checker[] board = new Checker[10][10];
+    static Checker[][] board = new Checker[10][10];
 
     public static void main(String args[]) {
         initBoard();
         System.out.println("Hi! welcome to the game of checkers!");
         printBoard();
         return;
-
     }
 
 
@@ -26,17 +25,19 @@ public class Game {
         int j;
         for (i = 0; i < 4; i++) {
             for(j = 0; j < 10; j++) {
+		// if (i%2 == 0) && (j%2 == 1)
+		// if (i%2 == 1) && (j%2 == 0)
                 if ((i & 1) ^ (j & 1) == 1) {
                     board[i][j] = new Checker(ID, 1, i, j);
                     ID++;
                 } else {
-                    board[i][j] = NULL;
+                    board[i][j] = null;
                 }
             }
         }
         for (i = 4; i < 6; i++) {
             for (j = 0; j < 10; j++) {
-                board[i][j] = NULL;
+                board[i][j] = null;
             }
         }
         for (i = 6; i < 10; i++) {
@@ -45,7 +46,7 @@ public class Game {
                     board[i][j] = new Checker(ID, 3, i, j);
                     ID++;
                 } else {
-                    board[i][j] = NULL;
+                    board[i][j] = null;
                 }
             }
         }
@@ -58,7 +59,7 @@ public class Game {
     public static void printBoard() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (board[i][j] == NULL) {
+                if (board[i][j] == null) {
                     System.out.print("0");
                 }
                 System.out.print(board[i][j].getType());
