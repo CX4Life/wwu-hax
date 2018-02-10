@@ -4,16 +4,20 @@
 // Wyatt Chapman
 
 public class Checker {
-    int ID;
-    int i;
-    int j;
-    char color;
-    char type;
+    private int ID;
+    private int i;
+    private int j;
 
-    public Checker(int i, char c, char t, int i, int j) {
-        this.ID = i;
-        this.color = c;
-        this.type = t;
+    //type:
+    //1 = black
+    //2 = black king
+    //3 = red
+    //4 = red king
+    private int type;
+
+    public Checker(int ID, int type, int i, int j) {
+        this.ID = ID;
+        this.type = type;
         this.i = i;
         this.j = j;
     }
@@ -22,23 +26,19 @@ public class Checker {
         return this.ID;
     }
 
-    public char getColor() {
-        return this.color;
-    }
-
-    public char getType() {
+    public int getType() {
         return this.type;
     }
 
-    public void setType(char newt) {
+    public void setType(int newt) {
         this.type = newt;
     }
 
-    public int geti() {
+    public int getI() {
         return this.i;
     }
 
-    public int getj() {
+    public int getJ() {
         return this.j;
     }
 
