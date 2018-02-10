@@ -19,7 +19,7 @@ function addLiveFunction(obj,func_name,func)
     LIVE_OBJECTS[func_name][#LIVE_OBJECTS[func_name] + 1] = obj
 
     obj.index_table[func_name] = #LIVE_OBJECTS[func_name]
-    print('OBJECT ADDED AS LIVE_OBJECTS[' .. func_name .. ']' .. '[' .. obj.index_table[func_name] .. ']')
+    -- print('OBJECT ADDED AS LIVE_OBJECTS[' .. func_name .. ']' .. '[' .. obj.index_table[func_name] .. ']')
 
     return obj.index_table[func_name]
   end
