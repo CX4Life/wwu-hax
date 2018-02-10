@@ -15,3 +15,7 @@ Then to run the visualization you will need to run the `love` executable and pas
 
 ### Example
 `love wwu-hax/visualization log1.txt`
+
+This assumes you have love added to your PATH, if not you need to provide the full path to love2d like so
+
+`C:\Program Files\LOVE\love.exe .\visualization .\log1.txt`
