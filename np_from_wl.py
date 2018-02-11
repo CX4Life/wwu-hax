@@ -29,4 +29,4 @@ def get_total_x_y():
 
 
 if __name__ == '__main__':
-    np_array_from_filename('win_loss/loss/1518331391.631597loss.txt')
+    np_array_from_filename('win_loss/loss/1518345450.739979loss.txt')

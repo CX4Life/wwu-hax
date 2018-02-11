@@ -10,14 +10,6 @@ RED = 1
 K_BLK = 4
 K_RED = 3
 
-def build_shitty_line(line_with_neg):
-    ret = ''
-    for i in range(len(line_with_neg)):
-        if line_with_neg[i] == '-':
-            i += 1
-
-
-
 
 def winner_zero(list_of_states):
     ret = []
@@ -25,7 +17,7 @@ def winner_zero(list_of_states):
         new_state = ','.join([x if x != '3' else '-1'for x in state])
         new_state = ''.join([x if x != '2' else '3' for x in new_state])
         new_state = ''.join([x if x != '4' else '-3' for x in new_state])
-        ret.append(new_state)
+        ret.append(new_state + '\n')
     return ret
 
 
@@ -40,7 +32,7 @@ def winner_one(list_of_states):
         new_state = ''.join([x if x != '3' else '1' for x in new_state])
         new_state = ''.join([x if x != '2' else '-3' for x in new_state])
         new_state = ''.join([x if x != '4' else '3' for x in new_state])
-        ret.append(new_state)
+        ret.append(new_state + '\n')
     return ret
 
 
