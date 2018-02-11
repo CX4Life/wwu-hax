@@ -25,8 +25,6 @@ def get_total_x_y():
         l_board_states = np_array_from_filename(LOSS_DIR + loss_filename)
         every_x.extend(l_board_states)
         every_y.extend([0.0] * len(l_board_states))
-
-    print('sanity check', len(every_x), len(every_y))
     return every_x, every_y
 
 
