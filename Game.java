@@ -117,7 +117,8 @@ public class Game {
 
     public static boolean possibleStates(boolean bTurn) {
 	boolean yesJump = false;
-	boolean canMove = false;
+	//boolean canMove = false;
+	int moveCount = 0;
         if (bTurn) {
             for (i = 0; i < 10; i++) {
                 for (i = 0; j < 10; j++) {
@@ -125,12 +126,14 @@ public class Game {
 			// if you can jump
 			if (canJump(i,j)) {
 			    yesJump = true;
+			    moveCount++;
 			    checkjump(i,j);
 			}
                     } else if (board[i][j].getType() == 2) {
 			// if you can jump
 			if (canJump(i,j)) {
 			    yesJump = true;
+			    moveCount++;
 			    checkjump(i,j);
 			}
                     }
@@ -143,12 +146,14 @@ public class Game {
 			// if you can jump
 			if (canJump(i,j)) {
 			    yesJump = true;
+			    moveCount++;
 			    checkjump(i,j);
 			}
                     } else if (board[i][j].getType() == 4) {
 			// if you can jump
 			if (canJump(i,j)) {
 			    yesJump = true;
+			    moveCount++;
 			    checkjump(i,j);
 			}
                     }
@@ -162,17 +167,17 @@ public class Game {
 		    for (i = 0; j < 10; j++) {
 			if (j<7) {
 			    if (i>0) {
-				moveDownLeft(i,j);
+				moveCount += moveDownLeft(i,j);
 			    } else if (i<7) {
-				moveDownRight(i,j);
+				moveCount += moveDownRight(i,j);
 			    }
 			}
 			if (board[i][j].getType() == 2) {
 			    if (j>0) {
 				if (i>0) {
-				    moveUpLeft(i,j);
+				    moveCount += moveUpLeft(i,j);
 				} else if (i<7) {
-				    moveUpRight(i,j);
+				    moveCount += moveUpRight(i,j);
 				}
 			    }
 			}
@@ -183,17 +188,17 @@ public class Game {
 		    for (i = 0; j < 10; j++) {
 			if (j>0) {
 			    if (i>0) {
-				moveUpLeft(i,j);
+				moveCount += moveUpLeft(i,j);
 			    } else if (i<7) {
-				moveUpRight(i,j);
+				moveCount += moveUpRight(i,j);
 			    }
 			}
 			if (board[i][j].getType() == 4) {
 			    if (j<7) {
 				if (i>0) {
-				    moveDownLeft(i,j);
+				    moveCount += moveDownLeft(i,j);
 				} else if (i<7) {
-				    moveDownRight(i,j);
+				    moveCount += moveDownRight(i,j);
 				}
 			    }
 			}
@@ -201,6 +206,11 @@ public class Game {
 		}
 	    }
 	}
+
+	if (moveCount > 0) {
+	    return true;
+	}
+	return false;
     }
 
     public static boolean canJump(int i, int j) {
@@ -282,7 +292,8 @@ public class Game {
 	return false;
     }
 
-    public static void moveDownLeft(int i, int j) {
+    public static int moveDownLeft(int i, int j) {
+	int yes = 0;
  	if (board[i-1][j+1] == null) {
 	    // move piece here
 	    board[i-1][j+1] = board[i][j];
@@ -293,10 +304,13 @@ public class Game {
 	    // reset board
 	    board[i][j] = board[i-1][j+1];
 	    board[i-1][j+1] = null;
+	    yes = 1;
 	}
+	return yes;
     }
 
-    public static void moveDownRight(int i, int j) {
+    public static int moveDownRight(int i, int j) {
+	int yes = 0;
 	if (board[i+1][j+1] == null) {
 	    // move piece here
 	    board[i+1][j+1] = board[i][j];
@@ -307,10 +321,13 @@ public class Game {
 	    // reset board
 	    board[i][j] = board[i+1][j+1];
 	    board[i+1][j+1] = null;
+	    yes = 1;
 	}
+	return yes;
     }
 
-    public static void moveUpLeft(int i, int j) {
+    public static int moveUpLeft(int i, int j) {
+	int yes = 0;
 	if (board[i-1][j-1] == null) {
 	    // move piece here
 	    board[i-1][j-1] = board[i][j];
@@ -321,10 +338,13 @@ public class Game {
 	    // reset board
 	    board[i][j] = board[i-1][j-1];
 	    board[i-1][j-1] = null;
+	    yes = 1;
 	}
+	return yes;
     }
 
-    public static void moveUpRight(int i, int j) {
+    public static int moveUpRight(int i, int j) {
+	int yes = 0;
 	if (board[i+1][j-1] == null) {
 	    // move piece here
 	    board[i+1][j-1] = board[i][j];
@@ -335,7 +355,9 @@ public class Game {
 	    // reset board
 	    board[i][j] = board[i+1][j-1];
 	    board[i+1][j-1] = null;
+	    yes = 1;
 	}
+	return yes;
     }
 
     public static void becomesKing(int i, int j) {
