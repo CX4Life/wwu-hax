@@ -863,7 +863,7 @@ public class Game {
                     /* check down-right jump */
                     if (i < 6) {
                         if (board[i + 1][j + 1] != null) {
-                            if (board[i - 1][j + 1].getType() == 1 || board[i - 1][j + 1].getType() == 2) {
+                            if (board[i + 1][j + 1].getType() == 1 || board[i + 1][j + 1].getType() == 2) {
                                 if (board[i + 2][j + 2] == null) {
                                     /* right jump valid */
                                     tail = false;
@@ -894,7 +894,7 @@ public class Game {
                     /* check up-left jump */
                     if (i > 1) {
                         if (board[i - 1][j - 1] != null) {
-                            if (board[i - 1][j + 1].getType() == 1 || board[i - 1][j + 1].getType() == 2) {
+                            if (board[i - 1][j - 1].getType() == 1 || board[i - 1][j - 1].getType() == 2) {
                                 if (board[i - 2][j - 2] == null) {
 
                                     /* up-left jump valid */
@@ -921,7 +921,7 @@ public class Game {
                     /* check up-right jump */
                     if (i < 6) {
                         if (board[i + 1][j - 1] != null) {
-                            if (board[i - 1][j + 1].getType() == 1 || board[i - 1][j + 1].getType() == 2) {
+                            if (board[i + 1][j - 1].getType() == 1 || board[i + 1][j - 1].getType() == 2) {
                                 if (board[i + 2][j - 2] == null) {
                                     /* up-right jump valid */
                                     tail = false;
