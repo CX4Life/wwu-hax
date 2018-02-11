@@ -43,12 +43,49 @@ function Button(x,y,text,settings,callback)
     love.graphics.setColor(kCOLOR_UI_ACCENT)
   end
 
+  if type(settings) == 'table' and settings.nodraw then
+    love.graphics.setColor(old_color)
+    return
+  end
+
   love.graphics.rectangle('fill', x, y, width, height)
 
   love.graphics.setColor(0,0,0)
   love.graphics.print(text,x+12,y+8)
   love.graphics.rectangle('line', x, y, width, height)
 
+  love.graphics.setColor(old_color)
+end
+
+function ToggleButton(x,y,text,settings,stateWrapper)
+  local old_color = {love.graphics.getColor()}
+  local width = 160
+  local height = 64
+
+  if settings.height then height = settings.height end
+  if settings.width then width = settings.width end
+
+
+  love.graphics.setColor(kCOLOR_UI_ACCENT)
+  if stateWrapper.state then
+    love.graphics.setColor(kCOLOR_SQUARE_DARK)
+  end
+  if mx > x and mx < x + width and my > y and my < y + height then
+    love.graphics.setColor(kCOLOR_UI)
+    if stateWrapper.state then
+      love.graphics.setColor(kCOLOR_SQUARE_LIGHT)
+    end
+
+    if mouseRelease then
+      stateWrapper.state = not stateWrapper.state
+      mouseRelease = false
+    end
+  end
+
+  love.graphics.rectangle('fill', x, y, width, height)
+  love.graphics.setColor(0,0,0)
+  love.graphics.rectangle('line', x, y, width, height)
+  love.graphics.print(text,x+12,y+8)
   love.graphics.setColor(old_color)
 end
 
