@@ -5,18 +5,18 @@ import tensorflow as tf
 import numpy as np
 import play_game
 import argparse
+import np_from_wl
 
 BOARD_DIM = 8
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("train")
-    parser.add_argument("dev")
 
     parser.add_argument("-lr", help="Learning rate", type=float, default=0.01)
     parser.add_argument("-mb", help="minibatch size", type=int, default=8)
     parser.add_argument("-epochs", help="number of epochs to train", type=int, default=5)
+    parser.add_argument("-td", help="train dev split, in 8ths", type=int, default=6)
 
     return parser.parse_args()
 
@@ -91,33 +91,25 @@ def build_graph(args):
     return init
 
 
-def set_train_x(collection):
-    x = []
-    with open(filename, 'r') as training_file:
-        x = play_game.read_board_state_to_2d(training_file)
-    return x
+def load_all_training_data(args):
+    all_x, all_y = np_from_wl.get_total_x_y()
+    split = int(len(all_x) * (args.td / 8))
+    train_x = all_x[:split]
+    dev_x = all_x[split:]
+    train_y = all_y[:split]
+    dev_y = all_y[split:]
+    return train_x, train_y, dev_x, dev_y
 
 
-def set_train_y(collection):
-    y = []
-    return y
-
-
-def set_dev_x(collection):
-    pass
-
-
-def set_dev_y(collection):
-    pass
-
-def train_model(train_file, dev):
-    train_x = load_train_x(train_file)
+def train_model(args):
+    tx, ty, dx, dy = load_all_training_data(args)
+    print(len(tx), len(ty), len(dx), len(dy))
 
 
 def main():
     args = parse_args()
     init = build_graph(args)
-
+    train_model(args)
 
 
 if __name__ == '__main__':
