@@ -391,7 +391,8 @@ public class Game {
 			}
 		    }
 		// move down right
-		} else if (i<6) {
+		}
+		if (i<6) {
 		    if (board[i+1][j+1] != null) {
 			if (board[i+1][j+1].getType() > 2) {
 			    if (board[i+2][j+2] == null) {
@@ -413,7 +414,8 @@ public class Game {
 			    }
 			}
 		    // move up right
-		    } else if (i<6) {
+		    }
+		    if (i<6) {
 			if (board[i+1][j-1] != null) {
 			    if (board[i+1][j-1].getType() > 2) {
 				if (board[i+2][j-2] == null) {
@@ -436,7 +438,8 @@ public class Game {
 			}
 		    }
 		// move up right
-		} else if (i<6) {
+		}
+		if (i<6) {
 		    if (board[i+1][j-1] != null) {
 			if (board[i+1][j-1].getType() < 3) {
 			    if (board[i+2][j-2] == null) {
@@ -457,7 +460,8 @@ public class Game {
 				}
 			    }
 			// move down right
-			} else if (i<6) {
+			}
+			if (i<6) {
 			    if (board[i+1][j+1] != null) {
 				if (board[i+1][j+1].getType() < 3) {
 				    if (board[i+2][j+2] == null) {
