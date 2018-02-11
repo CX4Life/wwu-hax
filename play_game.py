@@ -54,7 +54,6 @@ def print_selection_to_stdout(pick):
 
 def read_states_from_stdout(proc):
     states = []
-
     while True:
         state = []
         for i in range(9):
