@@ -11,18 +11,36 @@ require('ui')
 
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
-love.graphics.setNewFont(16)
-love.window.setMode(1600,900,{resizable = true,minwidth = 800,minheight = 664,highdpi = true})
+love.graphics.setNewFont(17)
+love.window.setMode(1600,900,{resizable = true,minwidth = 964,minheight = 800,highdpi = true})
 
 debugModeWrapper = {state}
+
+function love.filedropped(file)
+  INPUT_FILENAME = file:getFilename()
+  INPUT_DATA = file:read()
+  resetEverything()
+end
 
 -- Built in load function
 function love.load(args)
   preserveArgs = args
-  if args[2] then
-    INPUT_FILENAME = args[2]:split(' ')[1];
+  if not INPUT_FILENAME then
+    INPUT_FILENAME = 'input.txt'
+    if args[2] then
+      INPUT_FILENAME = args[2]:split(' ')[1];
+    end
   end
-  parseActionList(love.filesystem.read(INPUT_FILENAME))
+
+  if not INPUT_DATA then
+    INPUT_DATA = love.filesystem.read(INPUT_FILENAME)
+  end
+
+  if INPUT_FILENAME then
+    love.window.setTitle('TensorFlow Plays Checkers -- ' .. INPUT_FILENAME)
+  end
+
+  parseActionList(INPUT_DATA)
   initializePawns()
 end
 
@@ -36,7 +54,7 @@ function love.update(dt)
   end
   if delay_timer < 0 then
     executeAction(ACTIONS[ACTION_INDEX])
-    delay_timer = 0.25
+    delay_timer = DELAY_TIMER_SET
   end
 end
 
@@ -51,19 +69,26 @@ function love.draw()
   if playingBack then
     playPause = 'Pause'
 
-    if (ACTION_INDEX-1)/#ACTIONS == 1 then
+    if (ACTION_INDEX-1)/#ACTIONS >= 1 then
       playPause = 'Replay'
     end
   end
 
-  local ui_x = love.graphics.getWidth() - 160 - 32
+  local button_width = love.graphics.getWidth() / 4
+  local ui_x = love.graphics.getWidth() - button_width - 32
 
-  Button(ui_x,BOARD_SETTINGS.offset.y,playPause,{height = 96},ui.play)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*2,'Step Forward',ui.step)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Step Backward',ui.back)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*4,'Restart Playback',ui.reset)
+  -- The 'key' field is only used to track when the button should highlight, actual keybinding is done in ui.lua
+  Button(ui_x,BOARD_SETTINGS.offset.y,playPause..' (W)',{width = button_width,height = 96,key='w'},ui.play)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*2,'Step << (Q)',{width = button_width/2,key='q'},ui.back)
+  Button(ui_x + button_width/2,BOARD_SETTINGS.offset.y+68*2,'Step >> (E)',{width = button_width/2,key='e'},ui.step)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Slower (A)',{width = button_width/2,key='a'},ui.slower)
+  Button(ui_x + button_width/2,BOARD_SETTINGS.offset.y+68*3,'Faster (D)',{width = button_width/2,key='d'},ui.faster)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*4,'Restart Playback (R)',{width = button_width, key='r'},ui.reset)
 
-  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*5,'Debug Mode',{},debugModeWrapper)
-  renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*7)
+  renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*7,button_width)
+  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*8,'Debug Mode (D)',{width = button_width},debugModeWrapper)
   ProgressBar(BOARD_SETTINGS.offset.x, love.graphics.getHeight() - 64, 32, love.graphics.getWidth()-BOARD_SETTINGS.offset.x*2, (ACTION_INDEX-1)/#ACTIONS)
+  love.graphics.setColor(0,0,0)
+  local speed_string = 'playback speed: '.. (1-DELAY_TIMER_SET+.05)*100
+  love.graphics.print(speed_string,BOARD_SETTINGS.offset.x+32,love.graphics.getHeight() - 64)
 end
