@@ -109,7 +109,10 @@ public class Game {
 	    board[index1][index2] = null;
 
 	    // becomes king
-	    becomesKing(index3, index4);
+	    if (becomesKing(index3, index4)) {
+            bw.write("king " + board[index3][index4].getID());
+            bw.newLine();
+        }
 
 	    // check for a jump
 	    if (((index3 - index1) > 1) || ((index3 - index1) < -1)) {
