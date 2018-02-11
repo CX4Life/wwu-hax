@@ -9,12 +9,14 @@ BOARD_SETTINGS = {
 }
 
 function initGlobals()
+  delay_timer = 0
+  playingBack = false
+
   ACTIONS = {}
   ACTION_INDEX = 1
   PAWNS = {}
-  delay_timer = 0
-  playingBack = false
   INPUT_FILENAME = 'input.txt'
+  PRIORITY_OBJECT = nil
 end
 
 -- Function called by the 'RESET' button
