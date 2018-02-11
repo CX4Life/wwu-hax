@@ -27,7 +27,6 @@ def load_move_file(filename):
 def two_d_conv_layer(input, kernel_size, L, LPrime, stride, padding, func):
     """Create a 2d convolutional layer from parameters."""
     # expects a 4d tensor input of size MB x W x W x 1
-    #TODO figure out why the first dimension is minibatch
     W = tf.get_variable(name="W",
                         shape=(kernel_size, kernel_size,
                                L,
@@ -99,15 +98,34 @@ def load_all_training_data(args):
     return train_x, train_y, dev_x, dev_y
 
 
-def train_model(args):
+def train_model(args, init):
     tx, ty, dx, dy = load_all_training_data(args)
+    print('ty', ty)
+    tx /= 3
+    dx /= 3
+
+    N, D = tx.shape
+    print(N, D)
+
+    with tf.Session() as sess:
+        sess.run(fetches=[init])
+
+        for epoch in range(args.epochs):
+
+            for update in range(int(np.floor(N/args.mb))):
+                mb_x = tx[(update * args.mb): ((update + 1) * args.mb), :]
+                exit(0)
+
+
+
+
     print(len(tx), len(ty), len(dx), len(dy))
 
 
 def main():
     args = parse_args()
     init = build_graph(args)
-    train_model(args)
+    train_model(args, init)
 
 
 if __name__ == '__main__':
