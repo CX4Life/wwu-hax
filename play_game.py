@@ -3,16 +3,16 @@ import time
 import subprocess
 import sys
 
-
+DEBUG = True
 OUTPUT_DIR = 'move_files/'
 INIT_STATE = [[0,1,0,1,0,1,0,1],
               [1,0,1,0,1,0,1,0],
               [0,1,0,1,0,1,0,1],
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
-              [2,0,2,0,2,0,2,0],
-              [0,2,0,2,0,2,0,2],
-              [2,0,2,0,2,0,2,0]]
+              [3,0,3,0,3,0,3,0],
+              [0,3,0,3,0,3,0,3],
+              [3,0,3,0,3,0,3,0]]
 
 WIN_LOOKUP = {
     'b': '0',
@@ -114,7 +114,12 @@ def write_game_history(history, winner):
 
 def play_game():
     history = [INIT_STATE]
-    proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    counter = 0
+    if DEBUG:
+        proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    else:
+        proc = subprocess.Popen(['java', 'Game', 'log_moves.txt'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+
     while True:
         new_states = read_states_from_stdout(proc)
         if detect_win(new_states):
@@ -126,6 +131,9 @@ def play_game():
             choice = pick_state(new_states)
             history.append(new_states[choice])
             print_index_to_proc(proc, choice)
+            counter += 1
+            if DEBUG and counter > 5:
+                exit(0)
 
 
 if __name__ == '__main__':

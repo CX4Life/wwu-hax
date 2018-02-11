@@ -22,11 +22,9 @@ def build_shitty_line(line_with_neg):
 def winner_zero(list_of_states):
     ret = []
     for state in list_of_states:
-        new_state = ','.join([x if x != '1' else '-1'for x in state])
-        new_state = ''.join([x if x != '3' else '-3' for x in new_state])
-        new_state = ''.join([x if x != '2' else '1' for x in new_state])
-        new_state = ''.join([x if x != '4' else '3' for x in new_state])
-
+        new_state = ','.join([x if x != '3' else '-1'for x in state])
+        new_state = ''.join([x if x != '2' else '3' for x in new_state])
+        new_state = ''.join([x if x != '4' else '-3' for x in new_state])
         ret.append(new_state)
     return ret
 
@@ -38,9 +36,10 @@ def loser_one(list_of_states):
 def winner_one(list_of_states):
     ret = []
     for state in list_of_states:
-        new_state = ','.join([x if x != '2' else '-1' for x in state])
-        new_state = ''.join([x if x != '4' else '-3' for x in new_state])
-
+        new_state = ','.join([x if x != '1' else '-1' for x in state])
+        new_state = ''.join([x if x != '3' else '1' for x in new_state])
+        new_state = ''.join([x if x != '2' else '-3' for x in new_state])
+        new_state = ''.join([x if x != '4' else '3' for x in new_state])
         ret.append(new_state)
     return ret
 
