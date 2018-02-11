@@ -8,6 +8,7 @@ require('button')
 require('globals')
 require('progress_bar')
 require('ui')
+--
 
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
