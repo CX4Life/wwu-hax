@@ -100,20 +100,16 @@ def load_all_training_data(args):
 
 def train_model(args, init):
     tx, ty, dx, dy = load_all_training_data(args)
-    print('ty', ty)
-    tx /= 3
-    dx /= 3
-
-    N, D = tx.shape
+    N, D = len(tx), tx[0].shape
     print(N, D)
 
     with tf.Session() as sess:
         sess.run(fetches=[init])
 
         for epoch in range(args.epochs):
-
             for update in range(int(np.floor(N/args.mb))):
-                mb_x = tx[(update * args.mb): ((update + 1) * args.mb), :]
+                mb_x = tx[(update * args.mb): ((update + 1) * args.mb)]
+                print(len(mb_x), mb_x[0].shape)
                 exit(0)
 
 
