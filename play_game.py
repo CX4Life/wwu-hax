@@ -88,6 +88,7 @@ def write_game_history(history, winner):
         for state in history:
             stringy = ''
             for i, line in enumerate(state):
+
                 if i % 8 == 0:
                     stringy += '\n'
                 stringy += ''.join([str(x) for x in line])
@@ -95,7 +96,7 @@ def write_game_history(history, winner):
 
 
 def play_game():
-    history = [INIT_STATE * 6]
+    history = [INIT_STATE * 5]
     proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     new_states = read_states_from_stdout(proc)
     if detect_win(new_states):
