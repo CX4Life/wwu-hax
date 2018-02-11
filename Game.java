@@ -116,13 +116,19 @@ public class Game {
     }
 
     public static boolean possibleStates(boolean bTurn) {
+	boolean canJump = false;
+	boolean canMove = false;
         if (bTurn) {
             for (i = 0; i < 10; i++) {
                 for (i = 0; j < 10; j++) {
                     if (board[i][j].getType() == 1) {
-
+			// if you can jump
+			    // canJump = true;
+			    // checkjump(i,j)
                     } else if (board[i][j].getType() == 2) {
-
+			// if you can jump
+			   // canJump = true;
+			   // checkjump(i,j)
                     }
                 }
             }
@@ -130,15 +136,114 @@ public class Game {
             for (i = 0; i < 10; i++) {
                 for (i = 0; j < 10; j++) {
                     if (board[i][j].getType() == 3) {
-
+			// if you can jump
+			    // canJump = true;
+			    // checkjump(i,j)
                     } else if (board[i][j].getType() == 4) {
-
+			// if you can jump
+			    // canJump = true;
+			    // checkjump(i,j)
                     }
                 }
             }
+	}
 
+	if (canJump == false) {
+	    if (bTurn) {
+		for (i = 0; i < 10; i++) {
+		    for (i = 0; j < 10; j++) {
+			if (j<7) {
+			    if (i>0) {
+				moveDownLeft(i,j);
+			    } else if (i<7) {
+				moveDownRight(i,j);
+			    }
+			}
+			if (board[i][j].getType() == 2) {
+			    if (j>0) {
+				if (i>0) {
+				    moveUpLeft(i,j);
+				} else if (i<7) {
+				    moveUpRight(i,j);
+				}
+			    }
+			}
+		    }
+		}
+	    } else {
+		for (i = 0; i < 10; i++) {
+		    for (i = 0; j < 10; j++) {
+			if (j>0) {
+			    if (i>0) {
+				moveUpLeft(i,j);
+			    } else if (i<7) {
+				moveUpRight(i,j);
+			    }
+			}
+			if (board[i][j].getType() == 4) {
+			    if (j<7) {
+				if (i>0) {
+				    moveDownLeft(i,j);
+				} else if (i<7) {
+				    moveDownRight(i,j);
+				}
+			    }
+			}
+		    }
+		}
+	    }
+	}
     }
 
+    public static void moveDownLeft(int i, int j) {
+	if (board[i-1][j+1] == null) {
+	    // move piece here
+	    board[i-1][j+1] = board[i][j];
+	    board[i][j] = null;
+	    printBoard();
+	    // reset board
+	    board[i][j] = board[i-1][j+1];
+	    board[i-1][j+1] = null;
+	}
+    }
+
+    public static void moveDownRight(int i, int j) {
+	if (board[i+1][j+1] == null) {
+	    // move piece here
+	    board[i+1][j+1] = board[i][j];
+	    board[i][j] = null;
+	    printBoard();
+	    // reset board
+	    board[i][j] = board[i+1][j+1];
+	    board[i+1][j+1] = null;
+	}
+    }
+
+    public static void moveUpLeft(int i, int j) {
+	if (board[i-1][j-1] == null) {
+	    // move piece here
+	    board[i-1][j-1] = board[i][j];
+	    board[i][j] = null;
+	    printBoard();
+	    // reset board
+	    board[i][j] = board[i-1][j-1];
+	    board[i-1][j-1] = null;
+	}
+    }
+
+    public static void moveUpRight(int i, int j) {
+	if (board[i+1][j-1] == null) {
+	    // move piece here
+	    board[i+1][j-1] = board[i][j];
+	    board[i][j] = null;
+	    printBoard();
+	    // reset board
+	    board[i][j] = board[i+1][j-1];
+	    board[i+1][j-1] = null;
+	}
+    }
+
+    
     public static boolean checkJump(int i, int j) {
         Checker save;
         switch (board[i][j].getType()) {
