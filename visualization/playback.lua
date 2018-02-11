@@ -1,8 +1,4 @@
 ACTIONS = {
-  --{'move',15,7,4},
-  --{'move',10,6,3},
-  --{'move',15,5,2},
-  --{'remove',10}
 }
 
 ACTION_INDEX = 1
@@ -11,8 +7,12 @@ function executeAction(action)
   if action == nil then
     return
   end
+
+  print(unpack(action))
+
   local type = action[1]
   local id = action[2]
+  print(PAWNS[id])
   if type == 'move' then
     local x = action[3]
     local y = action[4]
@@ -20,7 +20,7 @@ function executeAction(action)
   end
 
   if type == 'remove' then
-    PAWNS[id]:destroy()
+    destroyPawn(id)
   end
 
   if type == 'king' then
@@ -36,14 +36,19 @@ function parseActionList(file_contents)
     print(v)
     local split_command = v:split(' ')
     local type = 'move'
-    local id
-    if not tonumber(split_command[1]) then
+    local id = tonumber(split_command[1])
+    local args = {}
+    if not id then
       type = split_command[1]
+      id = tonumber(split_command[2])
+    else
+      args = split_command[2]:split(',')
     end
 
     local action = {
-
+      type,id,unpack(args)
     }
-    --ACTIONS[#ACTIONS+1] = action
+
+    ACTIONS[#ACTIONS+1] = action
   end
 end
