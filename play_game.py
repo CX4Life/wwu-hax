@@ -84,16 +84,18 @@ def print_selection_to_proc(proc, choice):
 def write_game_history(history, winner):
     now = str(time.time())
     with open(OUTPUT_DIR + now + '.txt', 'w') as log:
-        log.write(winner + '\n')
+        log.write(winner)
         for state in history:
             stringy = ''
-            for line in state:
+            for i, line in enumerate(state):
+                if i % 8 == 0:
+                    stringy += '\n'
                 stringy += ''.join([str(x) for x in line])
             log.write(stringy + '\n')
 
 
 def play_game():
-    history = [INIT_STATE]
+    history = [INIT_STATE * 6]
     proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     new_states = read_states_from_stdout(proc)
     if detect_win(new_states):
