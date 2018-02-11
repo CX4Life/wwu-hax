@@ -13,6 +13,13 @@ INIT_STATE = [[0,1,0,1,0,1,0,1],
               [0,2,0,2,0,2,0,2],
               [2,0,2,0,2,0,2,0]]
 
+WIN_LOOKUP = {
+    'b': '0',
+    'r': '1',
+    'B': '0',
+    'R': '1'
+}
+
 
 def diff_states(current, next):
     dif = 0
@@ -51,7 +58,10 @@ def read_states_from_stdout(proc):
         state = []
         for i in range(9):
             line = proc.stdout.readline().rstrip()
-            if line[:1] != '?'.encode():
+            first_char = line[:1].decode()
+            if first_char in ['b', 'r', 'B', 'R']:
+                return [first_char] * 9
+            elif line[:1] != '?'.encode():
                 this_line = [int(x) for x in line.decode() if x not in ' \n']
                 if this_line:
                     state.append(this_line)
@@ -66,9 +76,7 @@ def pick_state(states):
 
 
 def detect_win(states):
-    if len(states) != 1:
-        return False
-    elif len(states[0][0]) != 8:
+    if states[0] and len(states[0]) != 8:
         return True
     return False
 
@@ -107,14 +115,17 @@ def write_game_history(history, winner):
 def play_game():
     history = [INIT_STATE]
     proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    new_states = read_states_from_stdout(proc)
-    if detect_win(new_states):
-        winner = str(new_states[0][0][0])
-        write_game_history(history, winner)
-
-    choice = pick_state(new_states)
-    history.append(new_states[choice])
-    print_index_to_proc(proc, choice)
+    while True:
+        new_states = read_states_from_stdout(proc)
+        if detect_win(new_states):
+            winner_char = str(new_states[0][0][0])
+            winner = WIN_LOOKUP[winner_char]
+            write_game_history(history, winner)
+            exit(0)
+        else:
+            choice = pick_state(new_states)
+            history.append(new_states[choice])
+            print_index_to_proc(proc, choice)
 
 
 if __name__ == '__main__':
