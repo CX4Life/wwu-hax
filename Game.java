@@ -23,6 +23,7 @@ public class Game {
         while (gameOn) {
             if (hasPieces(bTurn)) {
                 if (possibleStates(bTurn)) {
+		    System.out.println("?");
                     // move function here
                     bTurn = !bTurn;
                 } else {
