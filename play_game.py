@@ -1,7 +1,7 @@
 import random
 import time
 import subprocess
-import sys
+import datetime
 
 DEBUG = False
 OUTPUT_DIR = 'move_files/'
@@ -114,16 +114,16 @@ def write_game_history(history, winner):
 
 def play_game():
     history = [INIT_STATE]
+    sec = datetime.datetime.now().microsecond
     counter = 0
     if DEBUG:
         proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     else:
-        print("calling java")
-        proc = subprocess.Popen(['java', 'Game', 'log_moves.txt'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        proc = subprocess.Popen(['java', 'Game', str(sec) + '_log_moves.txt'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     while True:
         new_states = read_states_from_stdout(proc)
-        print('got states', len(new_states))
+        # print('got states', len(new_states))
         if detect_win(new_states):
             winner_char = str(new_states[0][0][0])
             winner = WIN_LOOKUP[winner_char]
