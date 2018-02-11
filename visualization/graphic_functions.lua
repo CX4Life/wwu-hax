@@ -40,7 +40,7 @@ function renderBoardSquare(x,y,color)
    BOARD_SETTINGS.square.length)
 
    love.graphics.setColor(100,100,100)
-   love.graphics.print(x .. ', ' .. y,display_x,display_y)
+   love.graphics.print(x-1 .. ', ' .. y-1,display_x,display_y)
 
    love.graphics.setColor(old_color)
 end
