@@ -39,11 +39,13 @@ public class Game {
             if (hasPieces(bTurn)) {
                 //ArrayList<String> moveList = new ArrayList<String>();
                 moveList.clear();
+		moveList.clear();
                 if (possibleStates(bTurn)) {
                     System.out.println("?");
                     // move function here
                     attemptMove();
                     //System.exit(0);
+		    attemptMove();
                     bTurn = !bTurn;
                 } else {
                     gameOn = false;
@@ -60,7 +62,50 @@ public class Game {
 	Scanner scan = new Scanner(System.in);
 	int input = scan.nextInt();
 	String move = moveList.get(input);
-	System.out.println(move);
+	System.out.println("MOVE IS : " + move);
+	String[] series = move.split(" ");
+
+	int index1;
+	int index2;
+	int index3;
+	int index4;
+
+	for (int i=0; i<series.length-1; i++) {
+	    index1 = Integer.parseInt(series[i].charAt(0)+"");
+	    index2 = Integer.parseInt(series[i].charAt(2)+"");
+	    index3 = Integer.parseInt(series[i+1].charAt(0)+"");
+	    index4 = Integer.parseInt(series[i+1].charAt(2)+"");
+	    int id = board[index1][index2].getID();
+
+	    System.out.println(board[index1][index2].getID() + " " + index3 + "," + index4);
+
+	    board[index3][index4] = board[index1][index2];
+	    board[index1][index2] = null;
+
+	    // becomes king
+	    becomesKing(index3, index4);
+
+	    // check for a jump
+	    if (((index3 - index1) > 1) || ((index3 - index1) < -1)) {
+		// up left
+		if (((index1 - index3) > 0) && (((index2 - index4) > 0))) {
+		    System.out.println("remove " + board[index1-1][index2-1].getID());
+		    board[index1-1][index2-1] = null;
+		// up right
+		} else if (((index1 - index3) < 0) && (((index2 - index4)) > 0)) {
+		    System.out.println("remove " + board[index1+1][index2-1].getID());
+		    board[index1+1][index2-1] = null;
+		// down left
+		} else if (((index1 - index3) > 0) && (((index2 - index4)) < 0)) {
+		    System.out.println("remove " + board[index1-1][index2+1].getID());
+		    board[index1-1][index2+1] = null;
+		// down right
+		} else {
+		    System.out.println("remove " + board[index1+1][index2+1].getID());
+		    board[index1+1][index2+1] = null;
+		}
+	    }
+	}
     }
 
     /*initBoard creates clean game board; sets piece IDs,
@@ -367,17 +412,21 @@ public class Game {
 
     public static int moveDownLeft(int i, int j) {
 	int yes = 0;
+	boolean kingChange = false;
  	if (board[i-1][j+1] == null) {
 	    // move piece here
 	    moveList.add(i + "," + j + " " + (i-1) + "," + (j+1));
 	    board[i-1][j+1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOME KING
-	    becomesKing(i-1,j+1);
+	    kingChange = becomesKing(i-1,j+1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i-1][j+1];
 	    board[i-1][j+1] = null;
+	    if (kingChange == true) {
+		board[i][j].setType(board[i][j].getType()-1);
+	    }
 	    yes = 1;
 	}
 	return yes;
@@ -385,17 +434,21 @@ public class Game {
 
     public static int moveDownRight(int i, int j) {
 	int yes = 0;
+	boolean kingChange = false;
 	if (board[i+1][j+1] == null) {
 	    // move piece here
 	    moveList.add(i + "," + j + " " + (i+1) + "," + (j+1));
 	    board[i+1][j+1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
-	    becomesKing(i+1,j+1);
+	    kingChange = becomesKing(i+1,j+1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i+1][j+1];
 	    board[i+1][j+1] = null;
+	    if (kingChange == true) {
+		board[i][j].setType(board[i][j].getType()-1);
+	    }
 	    yes = 1;
 	}
 	return yes;
@@ -403,17 +456,21 @@ public class Game {
 
     public static int moveUpLeft(int i, int j) {
 	int yes = 0;
+	boolean kingChange = false;
 	if (board[i-1][j-1] == null) {
 	    // move piece here
 	    moveList.add(i + "," + j + " " + (i-1) + "," + (j-1));
 	    board[i-1][j-1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
-	    becomesKing(i-1,j-1);
+	    kingChange = becomesKing(i-1,j-1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i-1][j-1];
 	    board[i-1][j-1] = null;
+	    if (kingChange == true) {
+		board[i][j].setType(board[i][j].getType()-1);
+	    }
 	    yes = 1;
 	}
 	return yes;
@@ -421,34 +478,41 @@ public class Game {
 
     public static int moveUpRight(int i, int j) {
 	int yes = 0;
+	boolean kingChange = false;
 	if (board[i+1][j-1] == null) {
 	    // move piece here
 	    moveList.add(i + "," + j + " " + (i+1) + "," + (j-1));
 	    board[i+1][j-1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
-	    becomesKing(i+1,j-1);
+	    kingChange = becomesKing(i+1,j-1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i+1][j-1];
 	    board[i+1][j-1] = null;
+	    if (kingChange == true) {
+		board[i][j].setType(board[i][j].getType()-1);
+	    }
 	    yes = 1;
 	}
 	return yes;
     }
 
-    public static void becomesKing(int i, int j) {
+    public static boolean becomesKing(int i, int j) {
 	if (board[i][j] != null) {
 	    if (board[i][j].getType() == 1) {
 		if (j==7) {
 		    board[i][j].setType(2);
+		    return true;
 		}
 	    } else if (board[i][j].getType() == 3) {
 		if (j==0) {
 		    board[i][j].setType(4);
+		    return true;
 		}
 	    }
 	}
+	return false;
     }
 
 
