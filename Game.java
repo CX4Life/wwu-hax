@@ -7,6 +7,7 @@ import java.util.*;
 public class Game {
 
     static Checker[][] board = new Checker[8][8];
+    static ArrayList<String> moveList = new ArrayList<String>();
 
     public static void main(String args[]) {
 
@@ -19,13 +20,16 @@ public class Game {
         boolean gameOn = true;
 
         initBoard();
-        System.out.println("Hi! welcome to the game of checkers!");
+        //System.out.println("Hi! welcome to the game of checkers!");
         while (gameOn) {
             if (hasPieces(bTurn)) {
+		//ArrayList<String> moveList = new ArrayList<String>();
+		moveList.clear();
                 if (possibleStates(bTurn)) {
 		    System.out.println("?");
                     // move function here
-		    System.exit(0);
+		    attemptMove();
+		    //System.exit(0);
                     bTurn = !bTurn;
                 } else {
                     gameOn = false;
@@ -36,6 +40,12 @@ public class Game {
         }
         //printBoard();
         return;
+    }
+
+    public static void attemptMove() {
+	Scanner scan = new Scanner(System.in);
+	String move = scan.nextLine();
+	
     }
 
     /*initBoard creates clean game board; sets piece IDs,
@@ -339,6 +349,7 @@ public class Game {
 	int yes = 0;
  	if (board[i-1][j+1] == null) {
 	    // move piece here
+	    moveList.add(i + j + " " + (i-1) + (j+1));
 	    board[i-1][j+1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOME KING
@@ -356,6 +367,7 @@ public class Game {
 	int yes = 0;
 	if (board[i+1][j+1] == null) {
 	    // move piece here
+	    moveList.add(i + j + " " + (i+1) + (j+1));
 	    board[i+1][j+1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
@@ -373,6 +385,7 @@ public class Game {
 	int yes = 0;
 	if (board[i-1][j-1] == null) {
 	    // move piece here
+	    moveList.add(i + j + " " + (i-1) + (j-1));
 	    board[i-1][j-1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
@@ -390,6 +403,7 @@ public class Game {
 	int yes = 0;
 	if (board[i+1][j-1] == null) {
 	    // move piece here
+	    moveList.add(i + j + " " + (i-1) + (j-1));
 	    board[i+1][j-1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
@@ -430,7 +444,7 @@ public class Game {
                         if (board[i - 1][j + 1] != null) {
                             if (board[i - 1][j + 1].getType() > 2) {
                                 if (board[i - 2][j + 2] == null) {
-
+				    
                                     /* left jump valid */
                                     tail = false;
                                     board[i - 2][j + 2] = board[i][j];
