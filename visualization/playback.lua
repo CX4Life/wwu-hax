@@ -36,6 +36,10 @@ function executeAction(action)
     local y = action[4]
     PAWNS[id]:setPosition(x,y)
     PRIORITY_OBJECT = PAWNS[id]
+    whosturn = 'red'
+    if id <= 11 then
+      whosturn = 'black'
+    end
   end
 
   if type == 'remove' then

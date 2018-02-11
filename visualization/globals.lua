@@ -4,13 +4,14 @@ BOARD_SETTINGS = {
     y = 44
   },
   square = {
-    length = 64
+    length = love.graphics.getWidth() * .1
   }
 }
 
 function initGlobals()
   delay_timer = 0
   playingBack = false
+  whosturn = 'red'
 
   ACTIONS = {}
   ACTION_INDEX = 1

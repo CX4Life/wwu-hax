@@ -68,6 +68,29 @@ function renderBoard()
   end
 end
 
+function renderTurnIndicator(x,y)
+  love.graphics.setColor(kCOLOR_UI_ACCENT)
+  love.graphics.rectangle('fill', x, y-32, 160, 64)
+  love.graphics.setColor(0,0,0)
+  love.graphics.rectangle('line', x, y-32, 160, 64)
+  love.graphics.setColor(kCOLOR_BLACK)
+  local accent = kCOLOR_BLACK_ACCENT
+  local circle_x = 32+8
+  local fill_x = 160-circle_x
+
+  if whosturn == 'red' then
+    love.graphics.setColor(kCOLOR_RED)
+    accent = kCOLOR_RED_ACCENT
+    fill_x = circle_x
+  end
+
+  love.graphics.circle('fill', x+fill_x, y, 32, 10)
+  love.graphics.setColor(kCOLOR_RED_ACCENT)
+  love.graphics.circle('line', x+circle_x, y, 32, 10)
+  love.graphics.setColor(kCOLOR_BLACK_ACCENT)
+  love.graphics.circle('line', x+160-circle_x, y, 32, 10)
+end
+
 function actualPosition(x,y)
   return  x * BOARD_SETTINGS.square.length + BOARD_SETTINGS.offset.x + BOARD_SETTINGS.square.length / 2,
           y * BOARD_SETTINGS.square.length + BOARD_SETTINGS.offset.y + BOARD_SETTINGS.square.length / 2
