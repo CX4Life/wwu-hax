@@ -1,31 +1,5 @@
 require('globals')
 
-function executeAction(action)
-  if action == nil then
-    return
-  end
-
-  print(unpack(action))
-
-  local type = action[1]
-  local id = action[2]
-  if type == 'move' then
-    local x = action[3]
-    local y = action[4]
-    PAWNS[id]:setPosition(x,y)
-  end
-
-  if type == 'remove' then
-    destroyPawn(id)
-  end
-
-  if type == 'king' then
-    PAWNS[id]:king()
-  end
-
-  ACTION_INDEX = ACTION_INDEX + 1
-end
-
 function parseActionList(file_contents)
   local split_lines = file_contents:split('\n')
   for i,v in ipairs(split_lines) do
@@ -46,4 +20,31 @@ function parseActionList(file_contents)
 
     ACTIONS[#ACTIONS+1] = action
   end
+end
+
+function executeAction(action)
+  if action == nil then
+    return
+  end
+
+  print(unpack(action))
+
+  local type = action[1]
+  local id = action[2]
+  if type == 'move' then
+    local x = action[3]
+    local y = action[4]
+    PAWNS[id]:setPosition(x,y)
+    PRIORITY_OBJECT = PAWNS[id]
+  end
+
+  if type == 'remove' then
+    destroyPawn(id)
+  end
+
+  if type == 'king' then
+    PAWNS[id]:king()
+  end
+
+  ACTION_INDEX = ACTION_INDEX + 1
 end

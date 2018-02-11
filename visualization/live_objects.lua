@@ -51,7 +51,14 @@ function runLiveFunction(func_name,arg)
     if obj and obj[func_name] then
       -- Pass in self as the first param
       -- Takes in one additional arg. Could be used as a table for multiple args
-      obj[func_name](obj,arg)
+
+      if obj ~= PRIORITY_OBJECT then
+        obj[func_name](obj,arg)
+      end
     end
+  end
+
+  if PRIORITY_OBJECT then
+    PRIORITY_OBJECT[func_name](PRIORITY_OBJECT,arg)
   end
 end
