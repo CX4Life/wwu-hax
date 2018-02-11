@@ -3,7 +3,7 @@ import time
 import subprocess
 import sys
 
-DEBUG = True
+DEBUG = False
 OUTPUT_DIR = 'move_files/'
 INIT_STATE = [[0,1,0,1,0,1,0,1],
               [1,0,1,0,1,0,1,0],
@@ -132,7 +132,7 @@ def play_game():
             history.append(new_states[choice])
             print_index_to_proc(proc, choice)
             counter += 1
-            if DEBUG and counter > 5:
+            if counter > 5:
                 exit(0)
 
 
