@@ -91,17 +91,24 @@ def build_graph(args):
     return init
 
 
-def load_train_x(filename):
+def set_train_x(collection):
     x = []
     with open(filename, 'r') as training_file:
         x = play_game.read_board_state_to_2d(training_file)
     return x
 
 
-def load_train_y(filename):
+def set_train_y(collection):
     y = []
     return y
 
+
+def set_dev_x(collection):
+    pass
+
+
+def set_dev_y(collection):
+    pass
 
 def train_model(train_file, dev):
     train_x = load_train_x(train_file)
