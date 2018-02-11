@@ -9,13 +9,54 @@ K_BLK = 4
 K_RED = 3
 
 
+def winner_zero(list_of_states):
+    ret = []
+    for state in list_of_states:
+        new_state = ''.join([x if x != '1' else '-1'for x in state])
+        new_state = ''.join([x if x != '3' else '-3' for x in new_state])
+        new_state = ''.join([x if x != '2' else '1' for x in new_state])
+        new_state = ''.join([x if x != '4' else '3' for x in new_state])
+        ret.append(new_state)
+    return ret
+
+
+def loser_one(list_of_states):
+    return winner_zero(list_of_states)
+
+
+def winner_one(list_of_states):
+    ret = []
+    for state in list_of_states:
+        new_state = ''.join([x if x != '2' else '-1' for x in state])
+        new_state = ''.join([x if x != '4' else '-3' for x in state])
+        ret.append(new_state)
+    return ret
+
+
+def loser_zero(list_of_states):
+    return winner_one(list_of_states)
+
+
 def write_winner(list_of_board_states, winner):
-    print('winner lines', len(list_of_board_states))
+    print('winner')
+    now = time.time()
+    if winner == 0:
+        to_write = winner_zero(list_of_board_states)
+    else:
+        to_write = winner_one(list_of_board_states)
+    with open(OUTPUT_DIR + now + 'win.txt', 'w') as log:
+        pass
 
 
 def write_loser(list_of_board_states, winner):
-    print('loser lines', len(list_of_board_states))
-
+    print('loser')
+    now = time.time()
+    if winner == 0:
+        to_write = loser_zero(list_of_board_states)
+    else:
+        to_write = loser_one(list_of_board_states)
+    with open(OUTPUT_DIR + now + 'loss.txt', 'w') as log:
+        pass
 
 
 def write_win_loss_from_history(open_file):
@@ -23,7 +64,8 @@ def write_win_loss_from_history(open_file):
     winner = open_file.readline().rstrip()
     list_of_lines = []
     for line in open_file:
-        list_of_lines.append(line.rstrip())
+        if line[:1] != '\n':
+            list_of_lines.append(line.rstrip())
     open_file.close()
     even_lines = []
     odd_lines = []
@@ -33,11 +75,11 @@ def write_win_loss_from_history(open_file):
         else:
             odd_lines.append(line)
     if winner is '0':
-        write_winner(even_lines)
-        write_loser(odd_lines)
+        write_winner(even_lines, 0)
+        write_loser(odd_lines, 0)
     else:
-        write_winner(even_lines)
-        write_loser(odd_lines)
+        write_winner(odd_lines, 1)
+        write_loser(even_lines, 1)
 
 
 def main():

@@ -15,9 +15,13 @@ def print_states():
 def main():
     for _ in range(3):
         print_states()
-
     print('?')
     get_state()
+
+    for _ in range(9):
+        print('R')
+    print('?')
+
 
 if __name__ == '__main__':
     main()
