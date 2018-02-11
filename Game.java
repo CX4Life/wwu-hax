@@ -87,7 +87,7 @@ public class Game {
 	int index3;
 	int index4;
 
-	for (int i=0; i<series.length-1; i++) {
+	for (int i=0; i<series.length-1; i+=2) {
 	    index1 = Integer.parseInt(series[i].charAt(0)+"");
 	    index2 = Integer.parseInt(series[i].charAt(2)+"");
 	    index3 = Integer.parseInt(series[i+1].charAt(0)+"");
@@ -95,7 +95,7 @@ public class Game {
 	    int id = board[index1][index2].getID();
 
 	    bw.write(board[index1][index2].getID() + " " + index3 + "," + index4);
-        bw.newLine();
+	    bw.newLine();
 
 	    board[index3][index4] = board[index1][index2];
 	    board[index1][index2] = null;
@@ -107,23 +107,27 @@ public class Game {
 	    if (((index3 - index1) > 1) || ((index3 - index1) < -1)) {
 		// up left
 		if (((index1 - index3) > 0) && (((index2 - index4) > 0))) {
+		    System.out.println("remove " + board[index1-1][index2-1].getID());
 		    bw.write("remove " + board[index1-1][index2-1].getID());
-            bw.newLine();
+		    bw.newLine();
 		    board[index1-1][index2-1] = null;
 		// up right
 		} else if (((index1 - index3) < 0) && (((index2 - index4)) > 0)) {
+		    System.out.println("remove " + board[index1+1][index2-1].getID());
 		    bw.write("remove " + board[index1+1][index2-1].getID());
-            bw.newLine();
+		    bw.newLine();
 		    board[index1+1][index2-1] = null;
 		// down left
 		} else if (((index1 - index3) > 0) && (((index2 - index4)) < 0)) {
+		    System.out.println("remove " + board[index1-1][index2+1].getID());
 		    bw.write("remove " + board[index1-1][index2+1].getID());
-            bw.newLine();
+		    bw.newLine();
 		    board[index1-1][index2+1] = null;
 		// down right
 		} else {
+		    System.out.println("remove " + board[index1+1][index2+1].getID());
 		    bw.write("remove " + board[index1+1][index2+1].getID());
-            bw.newLine();
+		    bw.newLine();
 		    board[index1+1][index2+1] = null;
 		}
 	    }
@@ -374,7 +378,7 @@ public class Game {
 		    // move up right
 		    } else if (i<6) {
 			if (board[i+1][j-1] != null) {
-			    if (board[i+1][j-2].getType() > 2) {
+			    if (board[i+1][j-1].getType() > 2) {
 				if (board[i+2][j-2] == null) {
 				    return true;
 				}
