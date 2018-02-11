@@ -32,8 +32,10 @@ function Pawn(id,x,y)
     pawn.kinged = true
   end
 
-  pawn.destroy = function(self)
-    Particle(self.x,self.y,self.draw_args.color,self.draw_args.accent)
+  pawn.destroy = function(self,useParticles)
+    if useParticles then
+      Particle(self.x,self.y,self.draw_args.color,self.draw_args.accent)
+    end
     removeLiveFunction(self,'draw')
     removeLiveFunction(self,'update')
   end
@@ -67,8 +69,8 @@ function interpolateDisplayPosition(self)
   self.displayPosition.y = self.displayPosition.y + math.floor((actual_y - self.displayPosition.y)/2)
 end
 
-function destroyPawn(id)
+function destroyPawn(id,b)
   if PAWNS[id] then
-    PAWNS[id]:destroy()
+    PAWNS[id]:destroy(b)
   end
 end

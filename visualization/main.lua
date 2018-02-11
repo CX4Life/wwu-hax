@@ -7,6 +7,7 @@ require('playback')
 require('button')
 require('globals')
 require('progress_bar')
+require('ui')
 
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
@@ -49,18 +50,20 @@ function love.draw()
   local playPause = 'Play'
   if playingBack then
     playPause = 'Pause'
-  end
-  local ui_x = love.graphics.getWidth() - 160 - 32
-  Button(ui_x,BOARD_SETTINGS.offset.y,playPause,{height = 128},function()
-    playingBack = not playingBack
+
     if (ACTION_INDEX-1)/#ACTIONS == 1 then
-      resetEverything()
+      playPause = 'Replay'
     end
-  end)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Restart Playback',function()
-    resetEverything()
-  end)
-  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*4,'Debug Mode',{},debugModeWrapper)
+  end
+
+  local ui_x = love.graphics.getWidth() - 160 - 32
+
+  Button(ui_x,BOARD_SETTINGS.offset.y,playPause,{height = 96},ui.play)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*2,'Step Forward',ui.step)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Step Backward',ui.back)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*4,'Restart Playback',ui.reset)
+
+  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*5,'Debug Mode',{},debugModeWrapper)
+  renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*7)
   ProgressBar(BOARD_SETTINGS.offset.x, love.graphics.getHeight() - 64, 32, love.graphics.getWidth()-BOARD_SETTINGS.offset.x*2, (ACTION_INDEX-1)/#ACTIONS)
-  renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*6)
 end

@@ -15,9 +15,7 @@ function Particle(x,y,color,accent)
     part.fragments[i] = {}
     addXYComponent(part.fragments[i],x,y)
     part.fragments[i].vel = {}
-    addXYComponent(part.fragments[i].vel,math.floor( (love.math.random()-0.5) * 10),-math.floor(love.math.random() * 10 + 10))
-
-    print(part.fragments[i].x .. ', ' .. part.fragments[i].y)
+    addXYComponent(part.fragments[i].vel,math.floor( (love.math.random()-0.5) * 20),-math.floor(love.math.random() * 20 + 15))
   end
 
   addLiveFunction(part,'draw',function(self)
@@ -35,7 +33,7 @@ function Particle(x,y,color,accent)
     for i=1,#self.fragments do
       local f = self.fragments[i]
       love.graphics.setColor(self.color)
-      love.graphics.circle('fill',dx + f.x,dy + f.y,20,math.floor(love.math.random()*5 + 2))
+      love.graphics.circle('fill',dx + f.x,dy + f.y,20,math.floor(love.math.random()*5 + 5))
       f.x = f.x + f.vel.x
       f.y = f.y + f.vel.y
 
