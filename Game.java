@@ -3,6 +3,7 @@
 // Tim Woods
 // Wyatt Chapman
 import java.util.*;
+import java.io.*;
 
 public class Game {
 
@@ -18,17 +19,23 @@ public class Game {
 
         File gameLog;
         FileWriter fw;
-        BufferedWriter bw;
+        BufferedWriter bw = null;
 
-        if (args.length() < 2) {
+        if (args.length < 1) {
             System.out.println("Please input log file name.");
             return;
         }
-
-        File = new File(args[1]);
-        fw = new FileWriter(gameLog);
-        bw = new BufferedWriter(fw);
-
+        try {
+            gameLog = new File(args[0]);
+            if (!gameLog.exists()) {
+                gameLog.createNewFile();
+            }
+            fw = new FileWriter(gameLog);
+            bw = new BufferedWriter(fw);
+        } catch (Exception ex) {
+            System.out.println("File IO issue.\n");
+            System.exit(1);
+        }
 
         //true until game over
         boolean gameOn = true;
@@ -43,9 +50,14 @@ public class Game {
                 if (possibleStates(bTurn)) {
                     System.out.println("?");
                     // move function here
-                    attemptMove();
+                    try {
+                        attemptMove(bw);
+                    } catch (Exception ex) {
+                        System.out.println("File IO issue.\n");
+                        System.out.println(ex);
+                        return;
+                    }
                     //System.exit(0);
-		    attemptMove();
                     bTurn = !bTurn;
                 } else {
                     gameOn = false;
@@ -58,11 +70,16 @@ public class Game {
         return;
     }
 
-    public static void attemptMove(BufferedWriter bw) {
+    public static void attemptMove(BufferedWriter bw) throws IOException {
 	Scanner scan = new Scanner(System.in);
-	int input = scan.nextInt();
+	String stuff = scan.nextLine();
+    if (stuff.equals("e")) {
+        bw.close();
+        System.exit(1);
+    }
+    int input = Integer.parseInt(stuff);
 	String move = moveList.get(input);
-	System.out.println("MOVE IS : " + move);
+	//System.out.println("MOVE IS : " + move);
 	String[] series = move.split(" ");
 
 	int index1;
@@ -77,7 +94,8 @@ public class Game {
 	    index4 = Integer.parseInt(series[i+1].charAt(2)+"");
 	    int id = board[index1][index2].getID();
 
-	    System.out.println(board[index1][index2].getID() + " " + index3 + "," + index4);
+	    bw.write(board[index1][index2].getID() + " " + index3 + "," + index4);
+        bw.newLine();
 
 	    board[index3][index4] = board[index1][index2];
 	    board[index1][index2] = null;
@@ -89,19 +107,23 @@ public class Game {
 	    if (((index3 - index1) > 1) || ((index3 - index1) < -1)) {
 		// up left
 		if (((index1 - index3) > 0) && (((index2 - index4) > 0))) {
-		    System.out.println("remove " + board[index1-1][index2-1].getID());
+		    bw.write("remove " + board[index1-1][index2-1].getID());
+            bw.newLine();
 		    board[index1-1][index2-1] = null;
 		// up right
 		} else if (((index1 - index3) < 0) && (((index2 - index4)) > 0)) {
-		    System.out.println("remove " + board[index1+1][index2-1].getID());
+		    bw.write("remove " + board[index1+1][index2-1].getID());
+            bw.newLine();
 		    board[index1+1][index2-1] = null;
 		// down left
 		} else if (((index1 - index3) > 0) && (((index2 - index4)) < 0)) {
-		    System.out.println("remove " + board[index1-1][index2+1].getID());
+		    bw.write("remove " + board[index1-1][index2+1].getID());
+            bw.newLine();
 		    board[index1-1][index2+1] = null;
 		// down right
 		} else {
-		    System.out.println("remove " + board[index1+1][index2+1].getID());
+		    bw.write("remove " + board[index1+1][index2+1].getID());
+            bw.newLine();
 		    board[index1+1][index2+1] = null;
 		}
 	    }
