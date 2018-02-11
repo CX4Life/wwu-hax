@@ -1,6 +1,8 @@
 require('graphic_functions')
 require('color')
 
+PAWNS = {}
+
 -- Creates a pawn object
 function Pawn(id,x,y)
   local pawn = {}
@@ -22,6 +24,13 @@ function Pawn(id,x,y)
     interpolateDisplayPosition(pawn)
   end)
 
+  pawn.destroy = function(self)
+    removeLiveFunction(self,'draw')
+    removeLiveFunction(self,'update')
+  end
+
+  PAWNS[pawn.id] = pawn
+
   return pawn
 end
 
@@ -30,6 +39,11 @@ function addXYComponent(self,x,y)
   self.y = 1
 
   if x and y then
+    self.x = x
+    self.y = y
+  end
+
+  self.setPosition = function(self,x,y)
     self.x = x
     self.y = y
   end
@@ -46,4 +60,21 @@ function interpolateDisplayPosition(self)
   -- TODO: make this interpolate rather than assign
   self.displayPosition.x = actualPosition.x
   self.displayPosition.y = actualPosition.y
+end
+
+-- Create all the pawns
+function initializePawns()
+  local id_counter = 0
+  for y = 0,7 do
+    for x = 0,7 do
+      if x % 2 ~= y % 2 and y < 3 then
+        Pawn(id_counter,x,y)
+        id_counter = id_counter + 1
+      end
+      if x % 2 ~= y % 2 and y > 4 then
+        Pawn(id_counter,x,y)
+        id_counter = id_counter + 1
+      end
+    end
+  end
 end

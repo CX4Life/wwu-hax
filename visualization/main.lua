@@ -3,6 +3,7 @@ require('live_objects')
 require('graphic_functions')
 require('color')
 require('pawn')
+require('playback')
 
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
@@ -18,30 +19,28 @@ BOARD_SETTINGS = {
   }
 }
 
-local id_counter = 0
-
-for y = 0,7 do
-  for x = 0,7 do
-    if x % 2 ~= y % 2 and y < 3 then
-      Pawn(id_counter,x,y)
-      id_counter = id_counter + 1
-    end
-    if x % 2 ~= y % 2 and y > 4 then
-      Pawn(id_counter,x,y)
-      id_counter = id_counter + 1
-    end
-  end
-end
+delay_timer = 1
 
 -- Built in load function
 function love.load(args)
-  INPUT_FILENAME = args[2]:split(' ')[1];
+  if args[2] then
+    INPUT_FILENAME = args[2]:split(' ')[1];
+  end
+  parseActionList(love.filesystem.read(INPUT_FILENAME))
+
+  initializePawns()
 end
 
 -- Built in update function
 -- Executes approximately every 1/60th of a second
 function love.update(dt)
   runLiveFunction('update',dt)
+
+  delay_timer = delay_timer - dt
+  if delay_timer < 0 then
+    executeAction(ACTIONS[ACTION_INDEX])
+    delay_timer = 1
+  end
 end
 
 -- Built in draw function
