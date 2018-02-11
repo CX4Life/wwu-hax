@@ -25,6 +25,7 @@ public class Game {
                 if (possibleStates(bTurn)) {
 		    System.out.println("?");
                     // move function here
+		    System.exit(0);
                     bTurn = !bTurn;
                 } else {
                     gameOn = false;
@@ -77,22 +78,26 @@ public class Game {
         if (bTurn) {
             for (int i=0; i<8; i++) {
                 for (int j=0; j<8; j++) {
-                    if (board[i][j].getType() == 1) {
-                        return true;
-                    } else if (board[i][j].getType() == 2) {
-                        return true;
-                    }
+		    if (board[i][j] != null) {
+			if (board[i][j].getType() == 1) {
+			    return true;
+			} else if (board[i][j].getType() == 2) {
+			    return true;
+			}
+		    }
                 }
             }
             // check red pieces
         } else {
             for (int i=0; i<8; i++) {
                 for (int j=0; j<8; j++) {
-                    if (board[i][j].getType() == 3) {
-                        return true;
-                    } else if (board[i][j].getType() == 4) {
-                        return true;
-                    }
+		    if (board[i][j] != null) {
+			if (board[i][j].getType() == 3) {
+			    return true;
+			} else if (board[i][j].getType() == 4) {
+			    return true;
+			}
+		    }
                 }
             }
         }
@@ -113,6 +118,7 @@ public class Game {
             }
             System.out.println();
         }
+	System.out.println();
     }
 
     public static boolean possibleStates(boolean bTurn) {
@@ -123,41 +129,45 @@ public class Game {
         int moveCount = 0;
 
         if (bTurn) {
-            for (i = 0; i < 10; i++) {
-                for (j = 0; j < 10; j++) {
-                    if (board[i][j].getType() == 1) {
-			// if you can jump
-			if (canJump(i,j)) {
-			    yesJump = true;
-			    moveCount++;
-			    checkJump(i,j);
-			}
-                    } else if (board[i][j].getType() == 2) {
-			// if you can jump
-			if (canJump(i,j)) {
-			    yesJump = true;
-			    moveCount++;
-			    checkJump(i,j);
+            for (i = 0; i < 8; i++) {
+                for (j = 0; j < 8; j++) {
+		    if (board[i][j] != null) {
+			if (board[i][j].getType() == 1) {
+			    // if you can jump
+			    if (canJump(i,j)) {
+				yesJump = true;
+				moveCount++;
+				checkJump(i,j);
+			    }
+			} else if (board[i][j].getType() == 2) {
+			    // if you can jump
+			    if (canJump(i,j)) {
+				yesJump = true;
+				moveCount++;
+				checkJump(i,j);
+			    }
 			}
                     }
                 }
             }
         } else {
-            for (i = 0; i < 10; i++) {
-                for (j = 0; j < 10; j++) {
-                    if (board[i][j].getType() == 3) {
-			// if you can jump
-			if (canJump(i,j)) {
-			    yesJump = true;
-			    moveCount++;
-			    checkJump(i,j);
-			}
-                    } else if (board[i][j].getType() == 4) {
-			// if you can jump
-			if (canJump(i,j)) {
-			    yesJump = true;
-			    moveCount++;
-			    checkJump(i,j);
+            for (i = 0; i < 8; i++) {
+                for (j = 0; j < 8; j++) {
+		    if (board[i][j] != null) {
+			if (board[i][j].getType() == 3) {
+			    // if you can jump
+			    if (canJump(i,j)) {
+				yesJump = true;
+				moveCount++;
+				checkJump(i,j);
+			    }
+			} else if (board[i][j].getType() == 4) {
+			    // if you can jump
+			    if (canJump(i,j)) {
+				yesJump = true;
+				moveCount++;
+				checkJump(i,j);
+			    }
 			}
                     }
                 }
@@ -166,42 +176,56 @@ public class Game {
 
 	if (yesJump == false) {
 	    if (bTurn) {
-		for (i = 0; i < 10; i++) {
-		    for (j = 0; j < 10; j++) {
-			if (j < 7) {
-			    if (i > 0) {
-				moveCount += moveDownLeft(i,j);
-			    } else if (i < 7) {
-				moveCount += moveDownRight(i,j);
+		for (i = 0; i < 8; i++) {
+		    for (j = 0; j < 8; j++) {
+			if (board[i][j] != null) {
+			    if (board[i][j].getType() < 3) {
+				if (j < 7) {
+				    if (i > 0) {
+					moveCount += moveDownLeft(i,j);
+				    }
+				    if (i < 7) {
+					moveCount += moveDownRight(i,j);
+				    }
+				}
 			    }
-			}
-			if (board[i][j].getType() == 2) {
-			    if (j > 0) {
-				if (i > 0) {
-				    moveCount += moveUpLeft(i,j);
-				} else if (i<7) {
-				    moveCount += moveUpRight(i,j);
+			    //if (board[i][j] != null) {
+			    if (board[i][j].getType() == 2) {
+				if (j > 0) {
+				    if (i > 0) {
+					moveCount += moveUpLeft(i,j);
+				    }
+				    if (i<7) {
+					moveCount += moveUpRight(i,j);
+				    }
 				}
 			    }
 			}
 		    }
 		}
 	    } else {
-		for (i = 0; i < 10; i++) {
-		    for (j = 0; j < 10; j++) {
-			if (j>0) {
-			    if (i>0) {
-				moveCount += moveUpLeft(i,j);
-			    } else if (i<7) {
-				moveCount += moveUpRight(i,j);
+		for (i = 0; i < 8; i++) {
+		    for (j = 0; j < 8; j++) {
+			if (board[i][j] != null) {
+			    if (board[i][j].getType() > 2) {
+				if (j>0) {
+				    if (i>0) {
+					moveCount += moveUpLeft(i,j);
+				    }
+				    if (i<7) {
+					moveCount += moveUpRight(i,j);
+				    }
+				}
 			    }
-			}
-			if (board[i][j].getType() == 4) {
-			    if (j<7) {
-				if (i>0) {
-				    moveCount += moveDownLeft(i,j);
-				} else if (i<7) {
-				    moveCount += moveDownRight(i,j);
+			//if (board[i][j] != null) {
+			    if (board[i][j].getType() == 4) {
+				if (j<7) {
+				    if (i>0) {
+					moveCount += moveDownLeft(i,j);
+				    }
+				    if (i<7) {
+					moveCount += moveDownRight(i,j);
+				    }
 				}
 			    }
 			}
@@ -222,15 +246,19 @@ public class Game {
 		// move down left
 		if (i>1) {
 		    if (board[i-1][j+1] != null) {
-			if (board[i-2][j+2] == null) {
-			    return true;
+			if (board[i-1][j+1].getType() > 2) {
+			    if (board[i-2][j+2] == null) {
+				return true;
+			    }
 			}
 		    }
 		// move down right
 		} else if (i<6) {
 		    if (board[i+1][j+1] != null) {
-			if (board[i+2][j+2] == null) {
-			    return true;
+			if (board[i+1][j+1].getType() > 2) {
+			    if (board[i+2][j+2] == null) {
+				return true;
+			    }
 			}
 		    }
 		}
@@ -240,15 +268,19 @@ public class Game {
 		    // move up left
 		    if (i>1) {
 			if (board[i-1][j-1] != null) {
-			    if (board[i-2][j-2] == null) {
-				return true;
+			    if (board[i-1][j-1].getType() > 2) {
+				if (board[i-2][j-2] == null) {
+				    return true;
+				}
 			    }
 			}
 		    // move up right
 		    } else if (i<6) {
 			if (board[i+1][j-1] != null) {
-			    if (board[i+2][j-2] == null) {
-				return true;
+			    if (board[i+1][j-2].getType() > 2) {
+				if (board[i+2][j-2] == null) {
+				    return true;
+				}
 			    }
 			}
 		    }
@@ -259,15 +291,19 @@ public class Game {
 		// move up left
 		if (i>1) {
 		    if (board[i-1][j-1] != null) {
-			if (board[i-2][j-2] == null) {
-			    return true;
+			if (board[i-1][j-1].getType() < 3) {
+			    if (board[i-2][j-2] == null) {
+				return true;
+			    }
 			}
 		    }
 		// move up right
 		} else if (i<6) {
 		    if (board[i+1][j-1] != null) {
-			if (board[i+2][j-2] == null) {
-			    return true;
+			if (board[i+1][j-1].getType() < 3) {
+			    if (board[i+2][j-2] == null) {
+				return true;
+			    }
 			}
 		    }
 		}
@@ -276,15 +312,19 @@ public class Game {
 		    // move down left
 			if (i>1) {
 			    if (board[i-1][j+1] != null) {
-				if (board[i-2][j+2] == null) {
-				    return true;
+				if (board[i-1][j+1].getType() < 3) { 
+				    if (board[i-2][j+2] == null) {
+					return true;
+				    }
 				}
 			    }
 			// move down right
 			} else if (i<6) {
 			    if (board[i+1][j+1] != null) {
-				if (board[i+2][j+2] == null) {
-				    return true;
+				if (board[i+1][j+1].getType() < 3) {
+				    if (board[i+2][j+2] == null) {
+					return true;
+				    }
 				}
 			    }
 			}
@@ -364,19 +404,22 @@ public class Game {
     }
 
     public static void becomesKing(int i, int j) {
-	if (board[i][j].getType() == 1) {
-	    if (j==7) {
-		board[i][j].setType(2);
-	    }
-	} else if (board[i][j].getType() == 3) {
-	    if (j==0) {
-		board[i][j].setType(4);
+	if (board[i][j] != null) {
+	    if (board[i][j].getType() == 1) {
+		if (j==7) {
+		    board[i][j].setType(2);
+		}
+	    } else if (board[i][j].getType() == 3) {
+		if (j==0) {
+		    board[i][j].setType(4);
+		}
 	    }
 	}
     }
 
 
     public static void checkJump(int i, int j) {
+	System.out.println("CHECKJUMP");
         Checker save;
         boolean tail = true; //signals end of jump chain
         switch (board[i][j].getType()) {
