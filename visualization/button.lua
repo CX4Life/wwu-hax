@@ -5,7 +5,7 @@ local useTouchScreen = false
 
 function Button(x,y,text,settings,callback)
   local old_color = {love.graphics.getColor()}
-  local width = 160
+  local width = 240
   local height = 64
 
   if not useTouchScreen then
@@ -43,9 +43,10 @@ function Button(x,y,text,settings,callback)
     love.graphics.setColor(kCOLOR_UI_ACCENT)
   end
 
-  if type(settings) == 'table' and settings.nodraw then
-    love.graphics.setColor(old_color)
-    return
+  if type(settings) == 'table' and settings.key then
+    if love.keyboard.isScancodeDown(settings.key) then
+      love.graphics.setColor(kCOLOR_SQUARE_LIGHT)
+    end
   end
 
   love.graphics.rectangle('fill', x, y, width, height)

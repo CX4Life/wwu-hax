@@ -26,6 +26,10 @@ ui = {
     for i=1,index do
       executeAction(ACTIONS[i],true)
     end
+  end,
+
+  debug = function()
+    debugModeWrapper.state = not debugModeWrapper.state
   end
 }
 
@@ -35,6 +39,7 @@ keybind['w'] = ui.play
 keybind['e'] = ui.step
 keybind['q'] = ui.back
 keybind['r'] = ui.reset
+keybind['d'] = ui.debug
 keybind['right'] = ui.step
 keybind['left'] = ui.back
 

@@ -8,6 +8,9 @@ BOARD_SETTINGS = {
   }
 }
 
+INPUT_DATA = nil
+INPUT_FILENAME = nil
+
 function initGlobals()
   delay_timer = 0
   playingBack = false
@@ -16,7 +19,6 @@ function initGlobals()
   ACTIONS = {}
   ACTION_INDEX = 1
   PAWNS = {}
-  INPUT_FILENAME = 'input.txt'
   PRIORITY_OBJECT = nil
 end
 

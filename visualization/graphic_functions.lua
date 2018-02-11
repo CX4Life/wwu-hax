@@ -70,9 +70,9 @@ end
 
 function renderTurnIndicator(x,y)
   love.graphics.setColor(kCOLOR_UI_ACCENT)
-  love.graphics.rectangle('fill', x, y-32, 160, 64)
+  love.graphics.rectangle('fill', x, y, 160, 64)
   love.graphics.setColor(0,0,0)
-  love.graphics.rectangle('line', x, y-32, 160, 64)
+  love.graphics.rectangle('line', x, y, 160, 64)
   love.graphics.setColor(kCOLOR_BLACK)
   local accent = kCOLOR_BLACK_ACCENT
   local circle_x = 32+8
@@ -84,11 +84,11 @@ function renderTurnIndicator(x,y)
     fill_x = circle_x
   end
 
-  love.graphics.circle('fill', x+fill_x, y, 32, 10)
+  love.graphics.circle('fill', x+fill_x, y+32, 32, 10)
   love.graphics.setColor(kCOLOR_RED_ACCENT)
-  love.graphics.circle('line', x+circle_x, y, 32, 10)
+  love.graphics.circle('line', x+circle_x, y+32, 32, 10)
   love.graphics.setColor(kCOLOR_BLACK_ACCENT)
-  love.graphics.circle('line', x+160-circle_x, y, 32, 10)
+  love.graphics.circle('line', x+160-circle_x, y+32, 32, 10)
 end
 
 function actualPosition(x,y)

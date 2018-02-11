@@ -12,17 +12,35 @@ require('ui')
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
 love.graphics.setNewFont(16)
-love.window.setMode(1600,900,{resizable = true,minwidth = 800,minheight = 664,highdpi = true})
+love.window.setMode(1600,900,{resizable = true,minwidth = 964,minheight = 800,highdpi = true})
 
 debugModeWrapper = {state}
+
+function love.filedropped(file)
+  INPUT_FILENAME = file:getFilename()
+  INPUT_DATA = file:read()
+  resetEverything()
+end
 
 -- Built in load function
 function love.load(args)
   preserveArgs = args
-  if args[2] then
-    INPUT_FILENAME = args[2]:split(' ')[1];
+  if not INPUT_FILENAME then
+    INPUT_FILENAME = 'input.txt'
+    if args[2] then
+      INPUT_FILENAME = args[2]:split(' ')[1];
+    end
   end
-  parseActionList(love.filesystem.read(INPUT_FILENAME))
+
+  if not INPUT_DATA then
+    INPUT_DATA = love.filesystem.read(INPUT_FILENAME)
+  end
+
+  if INPUT_FILENAME then
+    love.window.setTitle('TensorFlow Plays Checkers -- ' .. INPUT_FILENAME)
+  end
+
+  parseActionList(INPUT_DATA)
   initializePawns()
 end
 
@@ -51,19 +69,21 @@ function love.draw()
   if playingBack then
     playPause = 'Pause'
 
-    if (ACTION_INDEX-1)/#ACTIONS == 1 then
+    if (ACTION_INDEX-1)/#ACTIONS >= 1 then
       playPause = 'Replay'
     end
   end
 
-  local ui_x = love.graphics.getWidth() - 160 - 32
+  local button_width = 240 + love.graphics.getWidth() / 8
+  local ui_x = love.graphics.getWidth() - button_width - 32
 
-  Button(ui_x,BOARD_SETTINGS.offset.y,playPause,{height = 96},ui.play)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*2,'Step Forward',ui.step)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Step Backward',ui.back)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*4,'Restart Playback',ui.reset)
+  -- The 'key' field is only used to track when the button should highlight, actual keybinding is done in ui.lua
+  Button(ui_x,BOARD_SETTINGS.offset.y,playPause..' (W)',{width = button_width,height = 96,key='w'},ui.play)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*2,'Step << (Q)',{width = button_width/2,key='q'},ui.back)
+  Button(ui_x + button_width/2,BOARD_SETTINGS.offset.y+68*2,'Step >> (E)',{width = button_width/2,key='e'},ui.step)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Restart Playback (R)',{width = button_width, key='r'},ui.reset)
 
-  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*5,'Debug Mode',{},debugModeWrapper)
   renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*7)
+  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*8,'Debug Mode (D)',{},debugModeWrapper)
   ProgressBar(BOARD_SETTINGS.offset.x, love.graphics.getHeight() - 64, 32, love.graphics.getWidth()-BOARD_SETTINGS.offset.x*2, (ACTION_INDEX-1)/#ACTIONS)
 end
