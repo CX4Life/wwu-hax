@@ -8,15 +8,14 @@ def get_state():
 
 
 def print_states():
-    booger = play_game.INIT_STATE
+    booger = play_game.INIT_STATE + ['\n']
     play_game.print_selection_to_stdout(booger)
 
 
 def main():
-    #for _ in range(3):
-    #    print_states()
-    for _ in range(8):
-        print('1')
+    for _ in range(3):
+        print_states()
+
     print('?')
     get_state()
 
