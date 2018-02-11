@@ -30,6 +30,20 @@ ui = {
 
   debug = function()
     debugModeWrapper.state = not debugModeWrapper.state
+  end,
+
+  faster = function()
+    DELAY_TIMER_SET = DELAY_TIMER_SET - .05
+    if DELAY_TIMER_SET < .05 then
+      DELAY_TIMER_SET = .05
+    end
+  end,
+
+  slower = function()
+    DELAY_TIMER_SET = DELAY_TIMER_SET + .05
+    if DELAY_TIMER_SET > 1 then
+      DELAY_TIMER_SET = 1
+    end
   end
 }
 
@@ -42,6 +56,8 @@ keybind['r'] = ui.reset
 keybind['d'] = ui.debug
 keybind['right'] = ui.step
 keybind['left'] = ui.back
+keybind['a'] = ui.slower
+keybind['d'] = ui.faster
 
 -- Built in function that's called every keypress
 function love.keypressed(key, scancode, isrepeat)

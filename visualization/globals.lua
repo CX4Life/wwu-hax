@@ -10,6 +10,7 @@ BOARD_SETTINGS = {
 
 INPUT_DATA = nil
 INPUT_FILENAME = nil
+DELAY_TIMER_SET = .25
 
 function initGlobals()
   delay_timer = 0

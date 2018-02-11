@@ -54,7 +54,7 @@ function love.update(dt)
   end
   if delay_timer < 0 then
     executeAction(ACTIONS[ACTION_INDEX])
-    delay_timer = 0.25
+    delay_timer = DELAY_TIMER_SET
   end
 end
 
@@ -81,9 +81,14 @@ function love.draw()
   Button(ui_x,BOARD_SETTINGS.offset.y,playPause..' (W)',{width = button_width,height = 96,key='w'},ui.play)
   Button(ui_x,BOARD_SETTINGS.offset.y+68*2,'Step << (Q)',{width = button_width/2,key='q'},ui.back)
   Button(ui_x + button_width/2,BOARD_SETTINGS.offset.y+68*2,'Step >> (E)',{width = button_width/2,key='e'},ui.step)
-  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Restart Playback (R)',{width = button_width, key='r'},ui.reset)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Slower (A)',{width = button_width/2,key='a'},ui.slower)
+  Button(ui_x + button_width/2,BOARD_SETTINGS.offset.y+68*3,'Faster (D)',{width = button_width/2,key='d'},ui.faster)
+  Button(ui_x,BOARD_SETTINGS.offset.y+68*4,'Restart Playback (R)',{width = button_width, key='r'},ui.reset)
 
   renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*7,button_width)
   ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*8,'Debug Mode (D)',{width = button_width},debugModeWrapper)
   ProgressBar(BOARD_SETTINGS.offset.x, love.graphics.getHeight() - 64, 32, love.graphics.getWidth()-BOARD_SETTINGS.offset.x*2, (ACTION_INDEX-1)/#ACTIONS)
+  love.graphics.setColor(0,0,0)
+  local speed_string = 'playback speed: '.. (1-DELAY_TIMER_SET+.05)*100
+  love.graphics.print(speed_string,BOARD_SETTINGS.offset.x+32,love.graphics.getHeight() - 64)
 end
