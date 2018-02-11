@@ -199,6 +199,8 @@ public class Game {
 	    // move piece here
 	    board[i-1][j+1] = board[i][j];
 	    board[i][j] = null;
+	    // CHECK IF BECOME KING
+	    becomesKing(i-1,j+1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i-1][j+1];
@@ -211,6 +213,8 @@ public class Game {
 	    // move piece here
 	    board[i+1][j+1] = board[i][j];
 	    board[i][j] = null;
+	    // CHECK IF BECOMES KING
+	    becomesKing(i+1,j+1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i+1][j+1];
@@ -223,6 +227,8 @@ public class Game {
 	    // move piece here
 	    board[i-1][j-1] = board[i][j];
 	    board[i][j] = null;
+	    // CHECK IF BECOMES KING
+	    becomesKing(i-1,j-1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i-1][j-1];
@@ -235,10 +241,24 @@ public class Game {
 	    // move piece here
 	    board[i+1][j-1] = board[i][j];
 	    board[i][j] = null;
+	    // CHECK IF BECOMES KING
+	    becomesKing(i+1,j-1);
 	    printBoard();
 	    // reset board
 	    board[i][j] = board[i+1][j-1];
 	    board[i+1][j-1] = null;
+	}
+    }
+
+    public static void becomesKing(int i, int j) {
+	if (board[i][j].getType == 1) {
+	    if (j==7) {
+		board[i][j].setType(2);
+	    }
+	} else if (board[i][j].getType == 3) {
+	    if (j==0) {
+		board[i][j].setType(4);
+	    }
 	}
     }
 
