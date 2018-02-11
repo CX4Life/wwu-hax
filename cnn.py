@@ -3,8 +3,10 @@
 
 import tensorflow as tf
 import numpy as np
-import file_to_matrix
+import play_game
 import argparse
+
+BOARD_DIM = 8
 
 
 def parse_args():
@@ -20,7 +22,7 @@ def parse_args():
 
 
 def load_move_file(filename):
-    return file_to_matrix.read_file(filename)
+    return play_game.read_file(filename)
 
 def two_d_conv_layer(input, kernel_size, L, LPrime, stride, padding, func):
     """Create a 2d convolutional layer from parameters."""
@@ -66,14 +68,18 @@ def conv_layer_with_max_pooling(prev_layer, conv_k, l, lprime, conv_s, pad,
 
 def build_graph(args):
     y_true = tf.placeholder(dtype=tf.int64, shape=(None), name="y_true")
-    x = tf.placeholder(dtype=tf.float32, shape=(None, 10, 10, 1), name='x')
+    x = tf.placeholder(dtype=tf.float32,
+                       shape=(None, BOARD_DIM, BOARD_DIM, 1),
+                       name='x')
 
     with tf.variable_scope("con_max1"):
         a1 = conv_layer_with_max_pooling(x, 3, 1, 16, 1, 'SAME', 'relu', 1, 1)
+        print('a1 shape', a1.get_shape())
     with tf.variable_scope("con_max2"):
         a2 = conv_layer_with_max_pooling(a1, 3, 16, 16, 1, 'SAME', 'relu', 2, 2)
+        print('a2 shape', a2.get_shape())
     with tf.variable_scope("con_fc3"):
-        a3 = two_d_conv_layer(a2, 5, 16, 1, 1, 'VALID', 'relu')
+        a3 = two_d_conv_layer(a2, 4, 16, 1, 1, 'VALID', 'relu')
 
     z3 = tf.squeeze(a3)
 
@@ -85,8 +91,21 @@ def build_graph(args):
     return init
 
 
-def train_model():
-    pass
+def load_train_x(filename):
+    x = []
+    with open(filename, 'r') as training_file:
+        x = play_game.read_board_state_to_2d(training_file)
+    return x
+
+
+def load_train_y(filename):
+    y = []
+    return y
+
+
+def train_model(train_file, dev):
+    train_x = load_train_x(train_file)
+
 
 def main():
     args = parse_args()
