@@ -69,6 +69,12 @@ public class Game {
             }
         }
 	printWinner();
+    try {
+        bw.close();
+    } catch (Exception ex) {
+        System.out.println(ex);
+        return;
+    }
         return;
     }
 
