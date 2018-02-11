@@ -3,19 +3,30 @@ import time
 
 HISTORY_DIR = 'move_files/'
 OUTPUT_DIR = 'win_loss/'
+WIN_DIR = OUTPUT_DIR + 'win/'
+LOSS_DIR = OUTPUT_DIR + 'loss/'
 BLK = 2
 RED = 1
 K_BLK = 4
 K_RED = 3
 
+def build_shitty_line(line_with_neg):
+    ret = ''
+    for i in range(len(line_with_neg)):
+        if line_with_neg[i] == '-':
+            i += 1
+
+
+
 
 def winner_zero(list_of_states):
     ret = []
     for state in list_of_states:
-        new_state = ''.join([x if x != '1' else '-1'for x in state])
+        new_state = ','.join([x if x != '1' else '-1'for x in state])
         new_state = ''.join([x if x != '3' else '-3' for x in new_state])
         new_state = ''.join([x if x != '2' else '1' for x in new_state])
         new_state = ''.join([x if x != '4' else '3' for x in new_state])
+
         ret.append(new_state)
     return ret
 
@@ -27,8 +38,9 @@ def loser_one(list_of_states):
 def winner_one(list_of_states):
     ret = []
     for state in list_of_states:
-        new_state = ''.join([x if x != '2' else '-1' for x in state])
-        new_state = ''.join([x if x != '4' else '-3' for x in state])
+        new_state = ','.join([x if x != '2' else '-1' for x in state])
+        new_state = ''.join([x if x != '4' else '-3' for x in new_state])
+
         ret.append(new_state)
     return ret
 
@@ -38,25 +50,23 @@ def loser_zero(list_of_states):
 
 
 def write_winner(list_of_board_states, winner):
-    print('winner')
     now = str(time.time())
     if winner == 0:
         to_write = winner_zero(list_of_board_states)
     else:
         to_write = winner_one(list_of_board_states)
-    with open(OUTPUT_DIR + now + 'win.txt', 'w') as log:
-        pass
+    with open(WIN_DIR + now + 'win.txt', 'w') as log:
+        log.writelines(to_write)
 
 
 def write_loser(list_of_board_states, winner):
-    print('loser')
     now = str(time.time())
     if winner == 0:
         to_write = loser_zero(list_of_board_states)
     else:
         to_write = loser_one(list_of_board_states)
-    with open(OUTPUT_DIR + now + 'loss.txt', 'w') as log:
-        pass
+    with open(LOSS_DIR + now + 'loss.txt', 'w') as log:
+        log.writelines(to_write)
 
 
 def write_win_loss_from_history(open_file):
