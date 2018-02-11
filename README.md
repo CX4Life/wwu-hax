@@ -53,3 +53,5 @@ present the model with all of the board states that
 could result from the next move. It will then pick the move
 that results in a board state that has the highest scalar
 value of win likelihood at all points.
+
+Working on ML integration
