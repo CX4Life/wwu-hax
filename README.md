@@ -20,6 +20,10 @@ TensorFlow plays Checkers!
 - 3 = King Red
 - 4 = King Black
 
+##### Required directory structure
+Executables in repo base dir
+
+
 ##### Tim's TensorFlow thinking notes
 
 Here's the overall idea:
