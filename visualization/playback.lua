@@ -22,12 +22,14 @@ function parseActionList(file_contents)
   end
 end
 
-function executeAction(action)
+function executeAction(action,dont_animate)
   if action == nil then
     return
   end
 
-  print(unpack(action))
+  if not dont_animate then
+    print(unpack(action))
+  end
 
   local type = action[1]
   local id = action[2]
@@ -35,6 +37,9 @@ function executeAction(action)
     local x = action[3]
     local y = action[4]
     PAWNS[id]:setPosition(x,y)
+    if dont_animate then
+      PAWNS[id].displayPosition:setPosition( actualPosition(x,y) )
+    end
     PRIORITY_OBJECT = PAWNS[id]
     whosturn = 'red'
     if id <= 11 then
@@ -43,7 +48,7 @@ function executeAction(action)
   end
 
   if type == 'remove' then
-    destroyPawn(id)
+    destroyPawn(id,not dont_animate)
   end
 
   if type == 'king' then

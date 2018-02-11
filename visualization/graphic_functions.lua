@@ -20,7 +20,7 @@ function renderPawn(self)
   love.graphics.circle('fill', self.displayPosition.x, self.displayPosition.y, BOARD_SETTINGS.square.length / 4, 18)
 
   love.graphics.setColor(255,255,255)
-  if self.id > 11 or self.kinged then
+  if self.id > 11 then
     love.graphics.setColor(0,0,0)
   end
 

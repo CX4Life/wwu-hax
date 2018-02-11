@@ -1,7 +1,7 @@
 # WWU February Hackathon
 #### ; DROP TABLE Teams; --
 
-- Wyatt Champman
+- Wyatt Chapman
 - Sara Johnson
 - Iris Larsen
 - Tim Woods
