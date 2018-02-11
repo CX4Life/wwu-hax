@@ -49,7 +49,7 @@ def pick_move_random(set_of_states):
 def print_selection_to_stdout(pick):
     for row in pick:
         line = ' '.join(str(x) for x in row)
-        sys.stdout.write(line)
+        print(line)
 
 
 def read_states_from_stdout(proc):
@@ -116,7 +116,6 @@ def write_game_history(history, winner):
 def play_game():
     history = [INIT_STATE]
     proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    print(proc.pid)
     while True:
         new_states = read_states_from_stdout(proc)
         if detect_win(new_states):
