@@ -1,20 +1,42 @@
 require('color')
 
 local mouseDown = false
+local useTouchScreen = false
 
-function Button(x,y,text,callback)
+function Button(x,y,text,settings,callback)
   local old_color = {love.graphics.getColor()}
-  local width = 128
-  local height = 32
-  local mx,my = love.mouse.getPosition()
+  local width = 160
+  local height = 64
+
+  if not useTouchScreen then
+    mx,my = love.mouse.getPosition()
+  end
+
+  -- Optional param finaggling
+  if not callback then
+    callback = settings
+  else
+    if settings.height then
+      height = settings.height
+    end
+
+    if settings.width then
+      width = settings.width
+    end
+  end
+
   if mx > x and mx < x + width and my > y and my < y + height then
     love.graphics.setColor(kCOLOR_UI)
 
-    if getMouseRelease() then
+    if mouseRelease then
       callback()
+      if useTouchScreen then
+        mx,my = 0,0
+      end
+      mouseRelease = false
     end
 
-    if mouseDown then
+    if love.mouse.isDown(1) or love.touch.getTouches()[0] then
       love.graphics.setColor(kCOLOR_SQUARE_LIGHT)
     end
   else
@@ -30,13 +52,21 @@ function Button(x,y,text,callback)
   love.graphics.setColor(old_color)
 end
 
-function getMouseRelease()
-  local mouseWasDown = mouseDown
-  mouseDown = love.mouse.isDown(1)
+function love.touchpressed(id, x, y, dx, dy, pressure)
+  useTouchScreen = true
+  mx,my = x,y
+end
 
-  if not mouseDown and mouseDown ~= mouseWasDown then
-    return true
+function love.mousemoved(x, y, dx, dy)
+  useTouchScreen = false
+end
+
+function love.touchreleased(id, x, y, dx, dy, pressure)
+  mouseRelease = true
+end
+
+function love.mousereleased(x, y, button, isTouch)
+  if not isTouch then
+    mouseRelease = true
   end
-
-  return false
 end
