@@ -12,6 +12,8 @@ love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
 love.graphics.setNewFont(16)
 love.window.setMode(1600,900,{resizable = true,minwidth = 800,minheight = 600,highdpi = true})
 
+debugModeWrapper = {state}
+
 -- Built in load function
 function love.load(args)
   preserveArgs = args
@@ -27,6 +29,8 @@ end
 -- Executes approximately every 1/60th of a second
 function love.update(dt)
   runLiveFunction('update',dt)
+
+  DEBUG_MODE = debugModeWrapper.state
 
   if playingBack then
     delay_timer = delay_timer - dt
@@ -53,8 +57,9 @@ function love.draw()
     playingBack = not playingBack
   end)
 
-  Button(600,BOARD_SETTINGS.offset.y+44*3,'Restart Playback',function()
+  Button(600,BOARD_SETTINGS.offset.y+68*3,'Restart Playback',function()
     resetEverything()
   end)
 
+  ToggleButton(600,BOARD_SETTINGS.offset.y+68*4,'Debug Mode',{},debugModeWrapper)
 end

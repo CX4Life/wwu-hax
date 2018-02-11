@@ -23,7 +23,10 @@ function renderPawn(self)
   if self.id > 11 or self.kinged then
     love.graphics.setColor(0,0,0)
   end
-  love.graphics.print(self.id,self.displayPosition.x-love.graphics.getFont():getWidth(self.id)/2, self.displayPosition.y-10)
+
+  if DEBUG_MODE then
+    love.graphics.print(self.id,self.displayPosition.x-love.graphics.getFont():getWidth(self.id)/2, self.displayPosition.y-10)
+  end
 
   love.graphics.setColor(old_color)
 end
@@ -45,7 +48,9 @@ function renderBoardSquare(x,y,color)
    BOARD_SETTINGS.square.length)
 
    love.graphics.setColor(100,100,100)
-   love.graphics.print(x-1 .. ', ' .. y-1,display_x,display_y)
+   if DEBUG_MODE then
+     love.graphics.print(x-1 .. ', ' .. y-1,display_x,display_y)
+   end
 
    love.graphics.setColor(old_color)
 end
