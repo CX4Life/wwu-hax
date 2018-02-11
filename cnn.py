@@ -74,10 +74,8 @@ def build_graph(args):
 
     with tf.variable_scope("con_max1"):
         a1 = conv_layer_with_max_pooling(x, 3, 1, 16, 1, 'SAME', 'relu', 1, 1)
-        print('a1 shape', a1.get_shape())
     with tf.variable_scope("con_max2"):
         a2 = conv_layer_with_max_pooling(a1, 3, 16, 16, 1, 'SAME', 'relu', 2, 2)
-        print('a2 shape', a2.get_shape())
     with tf.variable_scope("con_fc3"):
         a3 = two_d_conv_layer(a2, 4, 16, 1, 1, 'VALID', 'relu')
 
