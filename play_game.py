@@ -1,24 +1,28 @@
 import random
 import time
 import subprocess
-import sys
+import datetime
+import dtc
+import numpy as np
 
-
+DEBUG = False
+GENERATION = 1
 OUTPUT_DIR = 'move_files/'
 INIT_STATE = [[0,1,0,1,0,1,0,1],
               [1,0,1,0,1,0,1,0],
               [0,1,0,1,0,1,0,1],
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
-              [2,0,2,0,2,0,2,0],
-              [0,2,0,2,0,2,0,2],
-              [2,0,2,0,2,0,2,0]]
+              [3,0,3,0,3,0,3,0],
+              [0,3,0,3,0,3,0,3],
+              [3,0,3,0,3,0,3,0]]
 
 WIN_LOOKUP = {
     'b': '0',
     'r': '1',
     'B': '0',
-    'R': '1'
+    'R': '1',
+    'S': '2'
 }
 
 
@@ -59,7 +63,7 @@ def read_states_from_stdout(proc):
         for i in range(9):
             line = proc.stdout.readline().rstrip()
             first_char = line[:1].decode()
-            if first_char in ['b', 'r', 'B', 'R']:
+            if first_char in ['b', 'r', 'B', 'R', 'S']:
                 return [first_char] * 9
             elif line[:1] != '?'.encode():
                 this_line = [int(x) for x in line.decode() if x not in ' \n']
@@ -70,9 +74,27 @@ def read_states_from_stdout(proc):
         states.append(state)
 
 
-def pick_state(states):
-    diffed = pick_move_by_diff(INIT_STATE, states)
-    return states.index(diffed) if diffed else states.index(pick_move_random(states))
+def state_to_string(state):
+    ret = ''
+    for line in state:
+        ret += ''.join([str(x) for x in line])
+    return ret
+
+
+def pick_state(tree, states, odd):
+    if tree is None:
+        return random.randint(0, len(states) - 1)
+    else:
+        max = -1
+        choice = 0
+        for i, state in enumerate(states):
+            s = state_to_string(state)
+            npd = np.fromstring(dtc.state_to_X(odd, s), sep=',').reshape(1, -1)
+            score = tree.predict(npd)
+            if score > max:
+                max = score
+                choice = i
+        return choice
 
 
 def detect_win(states):
@@ -113,19 +135,31 @@ def write_game_history(history, winner):
 
 
 def play_game():
+    counter = 0
     history = [INIT_STATE]
-    proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    sec = datetime.datetime.now().microsecond
+    if GENERATION:
+        tree = dtc.classifier()
+    else:
+        tree = None
+    if DEBUG:
+        proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    else:
+        proc = subprocess.Popen(['java', 'Game', str(sec) + '_log_moves.txt'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+
     while True:
         new_states = read_states_from_stdout(proc)
+        # print('got states', len(new_states))
         if detect_win(new_states):
             winner_char = str(new_states[0][0][0])
             winner = WIN_LOOKUP[winner_char]
             write_game_history(history, winner)
             exit(0)
         else:
-            choice = pick_state(new_states)
+            choice = pick_state(tree, new_states, counter)
             history.append(new_states[choice])
             print_index_to_proc(proc, choice)
+            counter += 1
 
 
 if __name__ == '__main__':
