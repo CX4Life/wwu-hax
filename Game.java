@@ -21,17 +21,16 @@ public class Game {
         initBoard();
         System.out.println("Hi! welcome to the game of checkers!");
         while (gameOn) {
-            //TODO: check to see if there's no pieces left for a player
-	    if (hasPieces(bTurn)) {
-		if (possibleStates(bTurn)) {
-		    // move function here
-		    bTurn = !bTurn;
-		} else {
-		    gameOn = false;
-		}
-	    } else {
-		gameOn = false;
-	    }
+            if (hasPieces(bTurn)) {
+                if (possibleStates(bTurn)) {
+                    // move function here
+                    bTurn = !bTurn;
+                } else {
+                    gameOn = false;
+                }
+            } else {
+                gameOn = false;
+            }
         }
         //printBoard();
         return;
@@ -74,29 +73,29 @@ public class Game {
 
     public static boolean hasPieces(boolean bTurn) {
 	// check black pieces
-	if (bTurn) {
-	    for (int i=0; i<8; i++) {
-		for (int j=0; j<8; j++) {
-		    if (board[i][j].getType() == 1) {
-			return true;
-		    } else if (board[i][j].getType() == 2) {
-			return true;
-		    }
-		}
-	    }
-	// check red pieces
-	} else {
-	    for (int i=0; i<8; i++) {
-		for (int j=0; j<8; j++) {
-		    if (board[i][j].getType() == 3) {
-			return true;
-		    } else if (board[i][j].getType() == 4) {
-			return true;
-		    }
-		}
-	    }
-	}
-	return false;
+        if (bTurn) {
+            for (int i=0; i<8; i++) {
+                for (int j=0; j<8; j++) {
+                    if (board[i][j].getType() == 1) {
+                        return true;
+                    } else if (board[i][j].getType() == 2) {
+                        return true;
+                    }
+                }
+            }
+            // check red pieces
+        } else {
+            for (int i=0; i<8; i++) {
+                for (int j=0; j<8; j++) {
+                    if (board[i][j].getType() == 3) {
+                        return true;
+                    } else if (board[i][j].getType() == 4) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /*printBoard outputs ASCII representation of game board
@@ -266,6 +265,8 @@ public class Game {
                                     saveType = board[i - 1][j + 1].getType();
                                     board[i - 1][j + 1] = null;
                                     checkJump(i - 2, j + 2);
+
+                                    /* reset state */
                                     board[i][j] = board[i - 2][j + 2];
                                     board[i][j].setLocation()
                                 }
