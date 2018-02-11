@@ -11,7 +11,7 @@ require('ui')
 
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
-love.graphics.setNewFont(16)
+love.graphics.setNewFont(17)
 love.window.setMode(1600,900,{resizable = true,minwidth = 964,minheight = 800,highdpi = true})
 
 debugModeWrapper = {state}
@@ -74,7 +74,7 @@ function love.draw()
     end
   end
 
-  local button_width = 240 + love.graphics.getWidth() / 8
+  local button_width = love.graphics.getWidth() / 4
   local ui_x = love.graphics.getWidth() - button_width - 32
 
   -- The 'key' field is only used to track when the button should highlight, actual keybinding is done in ui.lua
@@ -83,7 +83,7 @@ function love.draw()
   Button(ui_x + button_width/2,BOARD_SETTINGS.offset.y+68*2,'Step >> (E)',{width = button_width/2,key='e'},ui.step)
   Button(ui_x,BOARD_SETTINGS.offset.y+68*3,'Restart Playback (R)',{width = button_width, key='r'},ui.reset)
 
-  renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*7)
-  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*8,'Debug Mode (D)',{},debugModeWrapper)
+  renderTurnIndicator(ui_x,BOARD_SETTINGS.offset.y+68*7,button_width)
+  ToggleButton(ui_x,BOARD_SETTINGS.offset.y+68*8,'Debug Mode (D)',{width = button_width},debugModeWrapper)
   ProgressBar(BOARD_SETTINGS.offset.x, love.graphics.getHeight() - 64, 32, love.graphics.getWidth()-BOARD_SETTINGS.offset.x*2, (ACTION_INDEX-1)/#ACTIONS)
 end
