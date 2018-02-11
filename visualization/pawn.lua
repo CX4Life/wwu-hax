@@ -33,7 +33,7 @@ function Pawn(id,x,y)
   end
 
   pawn.destroy = function(self)
-    Particle(self.x,self.y)
+    Particle(self.x,self.y,self.draw_args.color,self.draw_args.accent)
     removeLiveFunction(self,'draw')
     removeLiveFunction(self,'update')
   end
