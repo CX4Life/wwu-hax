@@ -1,6 +1,7 @@
 require('graphic_functions')
 require('color')
 require('globals')
+require('particles')
 
 -- Creates a pawn object
 function Pawn(id,x,y)
@@ -32,6 +33,7 @@ function Pawn(id,x,y)
   end
 
   pawn.destroy = function(self)
+    Particle(self.x,self.y)
     removeLiveFunction(self,'draw')
     removeLiveFunction(self,'update')
   end
