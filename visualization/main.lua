@@ -4,6 +4,7 @@ require('graphic_functions')
 require('color')
 require('pawn')
 require('playback')
+require('button')
 
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
@@ -20,6 +21,7 @@ BOARD_SETTINGS = {
 }
 
 delay_timer = 1
+playingBack = false
 
 -- Built in load function
 function love.load(args)
@@ -48,4 +50,15 @@ end
 function love.draw()
   renderBoard()
   runLiveFunction('draw')
+
+  Button(600,BOARD_SETTINGS.offset.y,'Play',function()
+    playingBack = true
+  end)
+  Button(600,BOARD_SETTINGS.offset.y+44*1,'Pause Playback',function()
+    playingBack = false
+  end)
+  Button(600,BOARD_SETTINGS.offset.y+44*2,'Restart Playback',function()
+    resetEverything()
+  end)
+
 end
