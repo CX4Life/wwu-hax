@@ -39,7 +39,7 @@ def loser_zero(list_of_states):
 
 def write_winner(list_of_board_states, winner):
     print('winner')
-    now = time.time()
+    now = str(time.time())
     if winner == 0:
         to_write = winner_zero(list_of_board_states)
     else:
@@ -50,7 +50,7 @@ def write_winner(list_of_board_states, winner):
 
 def write_loser(list_of_board_states, winner):
     print('loser')
-    now = time.time()
+    now = str(time.time())
     if winner == 0:
         to_write = loser_zero(list_of_board_states)
     else:
