@@ -12,7 +12,6 @@ function executeAction(action)
 
   local type = action[1]
   local id = action[2]
-  print(PAWNS[id])
   if type == 'move' then
     local x = action[3]
     local y = action[4]
@@ -33,7 +32,6 @@ end
 function parseActionList(file_contents)
   local split_lines = file_contents:split('\n')
   for i,v in ipairs(split_lines) do
-    print(v)
     local split_command = v:split(' ')
     local type = 'move'
     local id = tonumber(split_command[1])
