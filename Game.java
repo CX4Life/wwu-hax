@@ -44,8 +44,9 @@ public class Game {
 
     public static void attemptMove() {
 	Scanner scan = new Scanner(System.in);
-	String move = scan.nextLine();
-	
+	int input = scan.nextInt();
+	String move = moveList.get(input);
+	System.out.println(move);
     }
 
     /*initBoard creates clean game board; sets piece IDs,
@@ -137,6 +138,7 @@ public class Game {
         boolean yesJump = false;
         //boolean canMove = false;
         int moveCount = 0;
+	String mlist = "";
 
         if (bTurn) {
             for (i = 0; i < 8; i++) {
@@ -147,14 +149,16 @@ public class Game {
 			    if (canJump(i,j)) {
 				yesJump = true;
 				moveCount++;
-				checkJump(i,j);
+				String nlist = new String(mlist);
+				checkJump(i,j, nlist);
 			    }
 			} else if (board[i][j].getType() == 2) {
 			    // if you can jump
 			    if (canJump(i,j)) {
 				yesJump = true;
 				moveCount++;
-				checkJump(i,j);
+				String nlist = new String(mlist);
+				checkJump(i,j, nlist);
 			    }
 			}
                     }
@@ -169,14 +173,16 @@ public class Game {
 			    if (canJump(i,j)) {
 				yesJump = true;
 				moveCount++;
-				checkJump(i,j);
+				String nlist = new String(mlist);
+				checkJump(i,j,nlist);
 			    }
 			} else if (board[i][j].getType() == 4) {
 			    // if you can jump
 			    if (canJump(i,j)) {
 				yesJump = true;
 				moveCount++;
-				checkJump(i,j);
+				String nlist = new String(mlist);
+				checkJump(i,j,nlist);
 			    }
 			}
                     }
@@ -349,7 +355,7 @@ public class Game {
 	int yes = 0;
  	if (board[i-1][j+1] == null) {
 	    // move piece here
-	    moveList.add(i + j + " " + (i-1) + (j+1));
+	    moveList.add("" + i + j + " " + (i-1) + (j+1));
 	    board[i-1][j+1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOME KING
@@ -367,7 +373,7 @@ public class Game {
 	int yes = 0;
 	if (board[i+1][j+1] == null) {
 	    // move piece here
-	    moveList.add(i + j + " " + (i+1) + (j+1));
+	    moveList.add("" + i + j + " " + (i+1) + (j+1));
 	    board[i+1][j+1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
@@ -385,7 +391,7 @@ public class Game {
 	int yes = 0;
 	if (board[i-1][j-1] == null) {
 	    // move piece here
-	    moveList.add(i + j + " " + (i-1) + (j-1));
+	    moveList.add("" + i + j + " " + (i-1) + (j-1));
 	    board[i-1][j-1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
@@ -403,7 +409,7 @@ public class Game {
 	int yes = 0;
 	if (board[i+1][j-1] == null) {
 	    // move piece here
-	    moveList.add(i + j + " " + (i-1) + (j-1));
+	    moveList.add("" + i + j + " " + (i-1) + (j-1));
 	    board[i+1][j-1] = board[i][j];
 	    board[i][j] = null;
 	    // CHECK IF BECOMES KING
@@ -432,8 +438,8 @@ public class Game {
     }
 
 
-    public static void checkJump(int i, int j) {
-	System.out.println("CHECKJUMP");
+    public static void checkJump(int i, int j, String moves) {
+	//System.out.println("CHECKJUMP");
         Checker save;
         boolean tail = true; //signals end of jump chain
         switch (board[i][j].getType()) {
@@ -456,7 +462,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i - 1][j + 1];
                                     board[i - 1][j + 1] = null;
-                                    checkJump(i - 2, j + 2);
+				    moves += i + j + " " + (i-2) + (j+2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i - 2, j + 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i - 2][j + 2];
@@ -485,7 +493,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i + 1][j + 1];
                                     board[i + 1][j + 1] = null;
-                                    checkJump(i + 2, j + 2);
+				    moves += i + j + " " + (i+2) + (j+2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i + 2, j + 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i + 2][j + 2];
@@ -517,7 +527,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i - 1][j + 1];
                                     board[i - 1][j + 1] = null;
-                                    checkJump(i - 2, j + 2);
+				    moves += i + j + " " + (i-2) + (j+2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i - 2, j + 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i - 2][j + 2];
@@ -541,7 +553,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i + 1][j + 1];
                                     board[i + 1][j + 1] = null;
-                                    checkJump(i + 2, j + 2);
+				    moves += i + j + " " + (i+2) + (j+2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i + 2, j + 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i + 2][j + 2];
@@ -571,7 +585,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i - 1][j - 1];
                                     board[i - 1][j - 1] = null;
-                                    checkJump(i - 2, j - 2);
+				    moves += i + j + " " + (i-2) + (j-2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i - 2, j - 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i - 2][j - 2];
@@ -595,7 +611,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i + 1][j - 1];
                                     board[i + 1][j - 1] = null;
-                                    checkJump(i + 2, j - 2);
+				    moves += i + j + " " + (i+2) + (j-2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i + 2, j - 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i + 2][j - 2];
@@ -630,7 +648,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i - 1][j - 1];
                                     board[i - 1][j - 1] = null;
-                                    checkJump(i - 2, j - 2);
+				    moves += i + j + " " + (i-2) + (j-2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i - 2, j - 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i - 2][j - 2];
@@ -659,7 +679,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i + 1][j - 1];
                                     board[i + 1][j - 1] = null;
-                                    checkJump(i + 2, j - 2);
+				    moves += i + j + " " + (i+2) + (j-2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i + 2, j - 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i + 2][j - 2];
@@ -691,7 +713,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i - 1][j + 1];
                                     board[i - 1][j + 1] = null;
-                                    checkJump(i - 2, j + 2);
+				    moves += i + j + " " + (i-2) + (j+2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i - 2, j + 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i - 2][j + 2];
@@ -715,7 +739,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i + 1][j + 1];
                                     board[i + 1][j + 1] = null;
-                                    checkJump(i + 2, j + 2);
+				    moves += i + j + " " + (i+2) + (j+2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i + 2, j + 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i + 2][j + 2];
@@ -745,7 +771,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i - 1][j - 1];
                                     board[i - 1][j - 1] = null;
-                                    checkJump(i - 2, j - 2);
+				    moves += i + j + " " + (i-2) + (j-2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i - 2, j - 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i - 2][j - 2];
@@ -769,7 +797,9 @@ public class Game {
                                     board[i][j] = null;
                                     save = board[i + 1][j - 1];
                                     board[i + 1][j - 1] = null;
-                                    checkJump(i + 2, j - 2);
+				    moves += i + j + " " + (i+2) + (j-2) + " ";
+				    String nlist = new String(moves);
+                                    checkJump(i + 2, j - 2, nlist);
 
                                     /* reset state */
                                     board[i][j] = board[i + 2][j - 2];
@@ -786,6 +816,7 @@ public class Game {
                 break;
         }
         if (tail) {
+	    moveList.add(moves);
             printBoard();
         }
     }
