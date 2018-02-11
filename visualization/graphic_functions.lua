@@ -10,12 +10,18 @@ function renderPawn(self)
   local old_color = {love.graphics.getColor()}
   love.graphics.setColor(color)
   love.graphics.circle('fill', self.displayPosition.x, self.displayPosition.y, BOARD_SETTINGS.square.length / 2 - 5, 18)
+  if self.kinged then
+    love.graphics.setColor(kCOLOR_UI)
+    love.graphics.circle('fill', self.displayPosition.x, self.displayPosition.y, BOARD_SETTINGS.square.length / 2 - 5, 18)
+  end
   love.graphics.setColor(accent)
   love.graphics.circle('line', self.displayPosition.x, self.displayPosition.y, BOARD_SETTINGS.square.length / 2 - 5, 18)
-  love.graphics.circle('line', self.displayPosition.x, self.displayPosition.y, BOARD_SETTINGS.square.length / 4, 8)
+  love.graphics.setColor(accent)
+  love.graphics.circle('fill', self.displayPosition.x, self.displayPosition.y, BOARD_SETTINGS.square.length / 4, 18)
+
 
   love.graphics.setColor(255,255,255)
-  if self.id > 11 then
+  if self.id > 11 or self.kinged then
     love.graphics.setColor(0,0,0)
   end
   love.graphics.print(self.id,self.displayPosition.x-love.graphics.getFont():getWidth(self.id)/2, self.displayPosition.y-10)

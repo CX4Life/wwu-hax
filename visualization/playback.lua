@@ -1,7 +1,4 @@
-ACTIONS = {
-}
-
-ACTION_INDEX = 1
+require('globals')
 
 function executeAction(action)
   if action == nil then

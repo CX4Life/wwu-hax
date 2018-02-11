@@ -30,11 +30,11 @@ end
 function removeLiveFunction(obj,func_name)
   local id = obj.index_table[func_name]
   if not id then
-    print('ERR: Cannot delete object, does not have an id field for ' .. func_name)
+    --print('ERR: Cannot delete object, does not have an id field for ' .. func_name)
     return
   end
 
-  print('DELETE LIVE_OBJECTS [\'' .. func_name .. '\']' .. '[' .. id .. ']')
+  --print('DELETE LIVE_OBJECTS [\'' .. func_name .. '\']' .. '[' .. id .. ']')
 
   LIVE_OBJECTS[func_name][id] = false
   obj.index_table[func_name] = nil

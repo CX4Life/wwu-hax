@@ -1,7 +1,6 @@
 require('graphic_functions')
 require('color')
-
-PAWNS = {}
+require('globals')
 
 -- Creates a pawn object
 function Pawn(id,x,y)
@@ -17,6 +16,10 @@ function Pawn(id,x,y)
     pawn.draw_args.accent = kCOLOR_RED_ACCENT
   end
 
+  local color = pawn.draw_args.color
+  pawn.draw_args.color = pawn.draw_args.accent
+  pawn.draw_args.accent = color
+
   addXYComponent(pawn,x,y)
   addXYComponent(pawn.displayPosition,actualPosition(x,y))
   addLiveFunction(pawn,'draw',renderPawn)
@@ -24,13 +27,16 @@ function Pawn(id,x,y)
     interpolateDisplayPosition(pawn)
   end)
 
+  pawn.king = function(self)
+    pawn.kinged = true
+  end
+
   pawn.destroy = function(self)
     removeLiveFunction(self,'draw')
     removeLiveFunction(self,'update')
   end
 
   PAWNS[pawn.id] = pawn
-  print(pawn.id,PAWNS[pawn.id])
 
   return pawn
 end
@@ -62,22 +68,5 @@ end
 function destroyPawn(id)
   if PAWNS[id] then
     PAWNS[id]:destroy()
-  end
-end
-
--- Create all the pawns
-function initializePawns()
-  local id_counter = 0
-  for y = 0,7 do
-    for x = 0,7 do
-      if x % 2 ~= y % 2 and y < 3 then
-        Pawn(id_counter,x,y)
-        id_counter = id_counter + 1
-      end
-      if x % 2 ~= y % 2 and y > 4 then
-        Pawn(id_counter,x,y)
-        id_counter = id_counter + 1
-      end
-    end
   end
 end
