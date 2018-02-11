@@ -6,11 +6,12 @@ require('pawn')
 require('playback')
 require('button')
 require('globals')
+require('progress_bar')
 
 love.window.setTitle('TensorFlow Plays Checkers')
 love.graphics.setBackgroundColor(kCOLOR_BACKGROUND)
 love.graphics.setNewFont(16)
-love.window.setMode(1600,900,{resizable = true,minwidth = 800,minheight = 600,highdpi = true})
+love.window.setMode(1600,900,{resizable = true,minwidth = 800,minheight = 664,highdpi = true})
 
 debugModeWrapper = {state}
 
@@ -62,4 +63,5 @@ function love.draw()
   end)
 
   ToggleButton(600,BOARD_SETTINGS.offset.y+68*4,'Debug Mode',{},debugModeWrapper)
+  ProgressBar(BOARD_SETTINGS.offset.x, love.graphics.getHeight() - 64, 32, love.graphics.getWidth()-BOARD_SETTINGS.offset.x*2, (ACTION_INDEX-1)/#ACTIONS)
 end
