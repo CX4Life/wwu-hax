@@ -13,11 +13,10 @@ def print_states():
 
 
 def main():
-    sys.stderr.write('GOING')
     for _ in range(3):
         print_states()
-    sys.stderr.write('Done with boards')
     print('?')
+    sys.stdout.flush()
     get_state()
 
     for _ in range(9):
