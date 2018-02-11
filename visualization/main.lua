@@ -39,7 +39,7 @@ function love.update(dt)
   delay_timer = delay_timer - dt
   if delay_timer < 0 then
     executeAction(ACTIONS[ACTION_INDEX])
-    delay_timer = 1
+    delay_timer = 0.5
   end
 end
 

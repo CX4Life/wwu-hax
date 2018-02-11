@@ -30,6 +30,7 @@ function Pawn(id,x,y)
   end
 
   PAWNS[pawn.id] = pawn
+  print(pawn.id,PAWNS[pawn.id])
 
   return pawn
 end
@@ -60,6 +61,12 @@ function interpolateDisplayPosition(self)
   -- TODO: make this interpolate rather than assign
   self.displayPosition.x = actualPosition.x
   self.displayPosition.y = actualPosition.y
+end
+
+function destroyPawn(id)
+  if PAWNS[id] then
+    PAWNS[id]:destroy()
+  end
 end
 
 -- Create all the pawns
