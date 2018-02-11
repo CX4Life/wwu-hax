@@ -16,6 +16,20 @@ public class Game {
         //black goes first
         boolean bTurn = true;
 
+        File gameLog;
+        FileWriter fw;
+        BufferedWriter bw;
+
+        if (args.length() < 2) {
+            System.out.println("Please input log file name.");
+            return;
+        }
+
+        File = new File(args[1]);
+        fw = new FileWriter(gameLog);
+        bw = new BufferedWriter(fw);
+
+
         //true until game over
         boolean gameOn = true;
 
@@ -23,13 +37,13 @@ public class Game {
         //System.out.println("Hi! welcome to the game of checkers!");
         while (gameOn) {
             if (hasPieces(bTurn)) {
-		//ArrayList<String> moveList = new ArrayList<String>();
-		moveList.clear();
+                //ArrayList<String> moveList = new ArrayList<String>();
+                moveList.clear();
                 if (possibleStates(bTurn)) {
-		    System.out.println("?");
+                    System.out.println("?");
                     // move function here
-		    attemptMove();
-		    //System.exit(0);
+                    attemptMove();
+                    //System.exit(0);
                     bTurn = !bTurn;
                 } else {
                     gameOn = false;
@@ -42,7 +56,7 @@ public class Game {
         return;
     }
 
-    public static void attemptMove() {
+    public static void attemptMove(BufferedWriter bw) {
 	Scanner scan = new Scanner(System.in);
 	int input = scan.nextInt();
 	String move = moveList.get(input);
@@ -450,7 +464,7 @@ public class Game {
                         if (board[i - 1][j + 1] != null) {
                             if (board[i - 1][j + 1].getType() > 2) {
                                 if (board[i - 2][j + 2] == null) {
-				    
+
                                     /* left jump valid */
                                     tail = false;
                                     board[i - 2][j + 2] = board[i][j];
