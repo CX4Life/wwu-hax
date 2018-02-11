@@ -9,11 +9,11 @@ K_BLK = 4
 K_RED = 3
 
 
-def write_winner(list_of_board_states):
+def write_winner(list_of_board_states, winner):
     print('winner lines', len(list_of_board_states))
 
 
-def write_loser(list_of_board_states):
+def write_loser(list_of_board_states, winner):
     print('loser lines', len(list_of_board_states))
 
 

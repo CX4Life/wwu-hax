@@ -49,11 +49,12 @@ def read_states_from_stdout(proc):
 
     while True:
         state = []
-        for i in range(8):
+        for i in range(9):
             line = proc.stdout.readline().rstrip()
             if line[:1] != '?'.encode():
-                this_line = [int(chr(x)) for x in line if chr(x) is not ' ']
-                state.append(this_line)
+                this_line = [int(x) for x in line.decode() if x not in ' \n']
+                if this_line:
+                    state.append(this_line)
             else:
                 return states
         states.append(state)
@@ -61,7 +62,7 @@ def read_states_from_stdout(proc):
 
 def pick_state(states):
     diffed = pick_move_by_diff(INIT_STATE, states)
-    return diffed if diffed else pick_move_random(states)
+    return states.index(diffed) if diffed else states.index(pick_move_random(states))
 
 
 def detect_win(states):
@@ -72,7 +73,15 @@ def detect_win(states):
     return False
 
 
+def print_index_to_proc(proc, index):
+    """Use this one"""
+    write_me = (str(index) + '\n').encode()
+    proc.stdin.write(write_me)
+    proc.stdin.flush()
+
+
 def print_selection_to_proc(proc, choice):
+    """Old, expects long line of history"""
     whole_string = ''
     for line in choice:
         whole_string += ''.join([str(x) for x in line])
@@ -96,7 +105,7 @@ def write_game_history(history, winner):
 
 
 def play_game():
-    history = [INIT_STATE * 5]
+    history = [INIT_STATE]
     proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     new_states = read_states_from_stdout(proc)
     if detect_win(new_states):
@@ -104,8 +113,8 @@ def play_game():
         write_game_history(history, winner)
 
     choice = pick_state(new_states)
-    history.append(choice)
-    print_selection_to_proc(proc, choice)
+    history.append(new_states[choice])
+    print_index_to_proc(proc, choice)
 
 
 if __name__ == '__main__':
