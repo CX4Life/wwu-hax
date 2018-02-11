@@ -57,3 +57,8 @@ function renderBoard()
     end
   end
 end
+
+function actualPosition(x,y)
+  return  x * BOARD_SETTINGS.square.length + BOARD_SETTINGS.offset.x + BOARD_SETTINGS.square.length / 2,
+          y * BOARD_SETTINGS.square.length + BOARD_SETTINGS.offset.y + BOARD_SETTINGS.square.length / 2
+end

@@ -18,7 +18,7 @@ function Pawn(id,x,y)
   end
 
   addXYComponent(pawn,x,y)
-  addXYComponent(pawn.displayPosition)
+  addXYComponent(pawn.displayPosition,actualPosition(x,y))
   addLiveFunction(pawn,'draw',renderPawn)
   addLiveFunction(pawn,'update',function()
     interpolateDisplayPosition(pawn)
@@ -53,14 +53,10 @@ end
 -- To bind to Pawn object
 -- Renders a pawn at position x,y
 function interpolateDisplayPosition(self)
-  local actualPosition = {
-    x = (self.x) * BOARD_SETTINGS.square.length + BOARD_SETTINGS.offset.x + BOARD_SETTINGS.square.length / 2,
-    y = (self.y) * BOARD_SETTINGS.square.length + BOARD_SETTINGS.offset.y + BOARD_SETTINGS.square.length / 2
-  }
+  local actual_x,actual_y = actualPosition(self.x,self.y)
 
-  -- TODO: make this interpolate rather than assign
-  self.displayPosition.x = actualPosition.x
-  self.displayPosition.y = actualPosition.y
+  self.displayPosition.x = self.displayPosition.x + math.floor((actual_x - self.displayPosition.x)/2)
+  self.displayPosition.y = self.displayPosition.y + math.floor((actual_y - self.displayPosition.y)/2)
 end
 
 function destroyPawn(id)
