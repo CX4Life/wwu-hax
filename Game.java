@@ -259,7 +259,6 @@ public class Game {
         int i;
         int j;
         boolean yesJump = false;
-        //boolean canMove = false;
         int moveCount = 0;
 	String mlist = "";
 
@@ -403,7 +402,7 @@ public class Game {
 		}
 	    }
 	    if (board[i][j].getType() == 2) {
-		if (j>2) {
+		if (j>1) {
 		    // move up left
 		    if (i>1) {
 			if (board[i-1][j-1] != null) {
@@ -426,7 +425,7 @@ public class Game {
 		}
 	    }
 	} else {
-	    if (j>2) {
+	    if (j>1) {
 		// move up left
 		if (i>1) {
 		    if (board[i-1][j-1] != null) {
