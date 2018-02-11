@@ -242,10 +242,44 @@ public class Game {
 		}
 	    }
 	} else {
-	    if (board[i][j] == 4) {
-		
+	    if (j>2) {
+		// move up left
+		if (i>1) {
+		    if (board[i-1][j-1] != null) {
+			if (board[i-2][j-2] == null) {
+			    return true;
+			}
+		    }
+		// move up right
+		} else if (i<6) {
+		    if (board[i+1][j-1] != null) {
+			if (board[i+2][j-2] == null) {
+			    return true;
+			}
+		    }
+		}
+		if (board[i][j] == 4) {
+		    if (j<6) {
+		    // move down left
+			if (i>1) {
+			    if (board[i-1][j+1] != null) {
+				if (board[i-2][j+2] == null) {
+				    return true;
+				}
+			    }
+			// move down right
+			} else if (i<6) {
+			    if (board[i+1][j+1] != null) {
+				if (board[i+2][j+2] == null) {
+				    return true;
+				}
+			    }
+			}
+		    }
+		}
 	    }
 	}
+	return false;
     }
 
     public static void moveDownLeft(int i, int j) {
@@ -341,7 +375,7 @@ public class Game {
 
                                     /* reset state */
                                     board[i][j] = board[i - 2][j + 2];
-                                    board[i][j].setLocation()
+                                    //board[i][j].setLocation()
                                 }
                             }
                         }
