@@ -45,8 +45,8 @@ public class Game {
         int ID = 0;
         int i;
         int j;
-        for (i = 0; i < 3; i++) {
-            for(j = 0; j < 8; j++) {
+        for (j = 0; j < 3; j++) {
+            for(i = 0; i < 8; i++) {
                 if (((i & 1) ^ (j & 1)) == 1) {
                     board[i][j] = new Checker(ID, 1, i, j);
                     ID++;
@@ -55,13 +55,13 @@ public class Game {
                 }
             }
         }
-        for (i = 3; i < 5; i++) {
-            for (j = 0; j < 8; j++) {
+        for (j = 3; j < 5; j++) {
+            for (i = 0; i < 8; i++) {
                 board[i][j] = null;
             }
         }
-        for (i = 5; i < 8; i++) {
-            for (j = 0; j < 8; j++) {
+        for (j = 5; j < 8; j++) {
+            for (i = 0; i < 8; i++) {
                 if (((i & 1) ^ (j & 1)) == 1) {
                     board[i][j] = new Checker(ID, 3, i, j);
                     ID++;
@@ -108,8 +108,8 @@ public class Game {
      *to the terminal
      */
     public static void printBoard() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < 8; i++) {
                 if (board[i][j] == null) {
                     System.out.print("0");
                 } else {
@@ -312,7 +312,7 @@ public class Game {
 		    // move down left
 			if (i>1) {
 			    if (board[i-1][j+1] != null) {
-				if (board[i-1][j+1].getType() < 3) { 
+				if (board[i-1][j+1].getType() < 3) {
 				    if (board[i-2][j+2] == null) {
 					return true;
 				    }
