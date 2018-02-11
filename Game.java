@@ -22,7 +22,7 @@ public class Game {
         System.out.println("Hi! welcome to the game of checkers!");
         while (gameOn) {
             //TODO: check to see if there's no pieces left for a player
-            
+
             possibleStates(bTurn);
             bTurn != bTurn;
         }
@@ -128,6 +128,8 @@ public class Game {
                                     saveType = board[i - 1][j + 1].getType();
                                     board[i - 1][j + 1] = null;
                                     checkJump(i - 2, j + 2);
+
+                                    /* reset state */
                                     board[i][j] = board[i - 2][j + 2];
                                     board[i][j].setLocation()
                                 }
