@@ -9,10 +9,10 @@ def np_array_from_filename(filename_with_path):
     if type(long_array[0]) is not np.float64:
         for array in long_array:
             array /= 3
-            ret.append(array.reshape((8,8)))
+            ret.append(array)
     else:
         long_array /= 3
-        ret.append(long_array.reshape((8,8)))
+        ret.append(long_array)
     return ret
 
 

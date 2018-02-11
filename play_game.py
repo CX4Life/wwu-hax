@@ -2,8 +2,11 @@ import random
 import time
 import subprocess
 import datetime
+import dtc
+import numpy as np
 
 DEBUG = False
+GENERATION = 1
 OUTPUT_DIR = 'move_files/'
 INIT_STATE = [[0,1,0,1,0,1,0,1],
               [1,0,1,0,1,0,1,0],
@@ -71,8 +74,27 @@ def read_states_from_stdout(proc):
         states.append(state)
 
 
-def pick_state(states):
-    return random.randint(0, len(states) - 1)
+def state_to_string(state):
+    ret = ''
+    for line in state:
+        ret += ''.join([str(x) for x in line])
+    return ret
+
+
+def pick_state(tree, states, odd):
+    if tree is None:
+        return random.randint(0, len(states) - 1)
+    else:
+        max = -1
+        choice = 0
+        for i, state in enumerate(states):
+            s = state_to_string(state)
+            npd = np.fromstring(dtc.state_to_X(odd, s), sep=',').reshape(1, -1)
+            score = tree.predict(npd)
+            if score > max:
+                max = score
+                choice = i
+        return choice
 
 
 def detect_win(states):
@@ -113,9 +135,13 @@ def write_game_history(history, winner):
 
 
 def play_game():
+    counter = 0
     history = [INIT_STATE]
     sec = datetime.datetime.now().microsecond
-    counter = 0
+    if GENERATION:
+        tree = dtc.classifier()
+    else:
+        tree = None
     if DEBUG:
         proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     else:
@@ -130,9 +156,10 @@ def play_game():
             write_game_history(history, winner)
             exit(0)
         else:
-            choice = pick_state(new_states)
+            choice = pick_state(tree, new_states, counter)
             history.append(new_states[choice])
             print_index_to_proc(proc, choice)
+            counter += 1
 
 
 if __name__ == '__main__':

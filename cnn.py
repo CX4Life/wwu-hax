@@ -81,9 +81,10 @@ def build_graph(args):
     z3 = tf.squeeze(a3)
 
     cross_ent = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=z3, labels=y_true)
+
     obj = tf.reduce_mean(cross_ent, name='obj')
     train_step = tf.train.AdamOptimizer(args.lr).minimize(obj, name="train_step")
-    acc = tf.reduce_mean(tf.cast(tf.equal(y_true, tf.argmax(z3, axis=1)), tf.float32), name='acc')
+    acc = tf.reduce_mean(tf.cast(tf.equal(tf.cast(y_true, tf.float32), z3), tf.float32), name='acc')
     init = tf.global_variables_initializer()
     return init
 
@@ -101,21 +102,21 @@ def load_all_training_data(args):
 def train_model(args, init):
     tx, ty, dx, dy = load_all_training_data(args)
     N, D = len(tx), tx[0].shape
-    print(N, D)
-
+    dx = np.reshape(dx, (-1, 8, 8, 1))
+    dy = np.reshape(dy, (len(dy)))
     with tf.Session() as sess:
         sess.run(fetches=[init])
 
         for epoch in range(args.epochs):
-            for update in range(int(np.floor(N/args.mb))):
-                mb_x = tx[(update * args.mb): ((update + 1) * args.mb)]
-                print(len(mb_x), mb_x[0].shape)
-                exit(0)
 
-
-
-
-    print(len(tx), len(ty), len(dx), len(dy))
+            for i, board in enumerate(tx):
+                mb_x = np.reshape(board, (1, 8, 8, 1))
+                mb_y = ty[i]
+                _, my_acc = sess.run(fetches=['train_step', 'acc:0'],\
+                                     feed_dict={'x:0':mb_x, 'y_true:0':mb_y})
+            [my_dev_acc] = sess.run(fetches=['acc:0'],\
+                                    feed_dict={'x:0':dx, 'y_true:0':dy})
+            print('Epoch %d: dev=%.5f' % (epoch, my_dev_acc))
 
 
 def main():
