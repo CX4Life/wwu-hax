@@ -39,19 +39,21 @@ public class Game {
 
         //true until game over
         boolean gameOn = true;
+	int totalMoves = 0;
 
         initBoard();
-        //System.out.println("Hi! welcome to the game of checkers!");
         while (gameOn) {
-            if (hasPieces(bTurn)) {
-                //ArrayList<String> moveList = new ArrayList<String>();
+            if (hasPieces(bTurn) && (totalMoves < 50)) {
                 moveList.clear();
-		moveList.clear();
                 if (possibleStates(bTurn)) {
                     System.out.println("?");
                     // move function here
                     try {
-                        attemptMove(bw);
+                        if (attemptMove(bw) == true) {
+			    totalMoves = 0;
+			} else {
+			    totalMoves++;
+			}
                     } catch (Exception ex) {
                         System.out.println("File IO issue.\n");
                         System.out.println(ex);
@@ -66,20 +68,20 @@ public class Game {
                 gameOn = false;
             }
         }
-        //printBoard();
+	printWinner();
         return;
     }
 
-    public static void attemptMove(BufferedWriter bw) throws IOException {
+    public static boolean attemptMove(BufferedWriter bw) throws IOException {
+	boolean capture = false;
 	Scanner scan = new Scanner(System.in);
 	String stuff = scan.nextLine();
-    if (stuff.equals("e")) {
-        bw.close();
-        System.exit(1);
-    }
-    int input = Integer.parseInt(stuff);
+	if (stuff.equals("e")) {
+	    bw.close();
+	    System.exit(1);
+	}
+	int input = Integer.parseInt(stuff);
 	String move = moveList.get(input);
-	//System.out.println("MOVE IS : " + move);
 	String[] series = move.split(" ");
 
 	int index1;
@@ -107,29 +109,56 @@ public class Game {
 	    if (((index3 - index1) > 1) || ((index3 - index1) < -1)) {
 		// up left
 		if (((index1 - index3) > 0) && (((index2 - index4) > 0))) {
-		    System.out.println("remove " + board[index1-1][index2-1].getID());
+		    //System.out.println("remove " + board[index1-1][index2-1].getID());
 		    bw.write("remove " + board[index1-1][index2-1].getID());
 		    bw.newLine();
 		    board[index1-1][index2-1] = null;
+		    capture = true;
 		// up right
 		} else if (((index1 - index3) < 0) && (((index2 - index4)) > 0)) {
-		    System.out.println("remove " + board[index1+1][index2-1].getID());
+		    //System.out.println("remove " + board[index1+1][index2-1].getID());
 		    bw.write("remove " + board[index1+1][index2-1].getID());
 		    bw.newLine();
 		    board[index1+1][index2-1] = null;
+		    capture = true;
 		// down left
 		} else if (((index1 - index3) > 0) && (((index2 - index4)) < 0)) {
-		    System.out.println("remove " + board[index1-1][index2+1].getID());
+		    //System.out.println("remove " + board[index1-1][index2+1].getID());
 		    bw.write("remove " + board[index1-1][index2+1].getID());
 		    bw.newLine();
 		    board[index1-1][index2+1] = null;
+		    capture = true;
 		// down right
 		} else {
-		    System.out.println("remove " + board[index1+1][index2+1].getID());
+		    //System.out.println("remove " + board[index1+1][index2+1].getID());
 		    bw.write("remove " + board[index1+1][index2+1].getID());
 		    bw.newLine();
 		    board[index1+1][index2+1] = null;
+		    capture = true;
 		}
+	    }
+	}
+	return capture;
+    }
+
+    public static void printWinner() {
+	boolean bTurn = true;
+	if (!hasPieces(bTurn)) {
+	    // red wins
+	    for (int i=0; i<8; i++) {
+		System.out.println("R");
+	    }
+	    System.out.println();
+	} else if (!hasPieces(!bTurn)) {
+	    // black wins
+	    for (int i=0; i<8; i++) {
+		System.out.println("B");
+	    }
+	    System.out.println();
+	} else {
+	    // stalemate
+	    for (int i=0; i<8; i++) {
+		System.out.println("S");
 	    }
 	}
     }
