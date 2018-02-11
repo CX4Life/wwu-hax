@@ -3,7 +3,7 @@ import time
 import subprocess
 import sys
 
-DEBUG = True
+DEBUG = False
 OUTPUT_DIR = 'move_files/'
 INIT_STATE = [[0,1,0,1,0,1,0,1],
               [1,0,1,0,1,0,1,0],
@@ -18,7 +18,8 @@ WIN_LOOKUP = {
     'b': '0',
     'r': '1',
     'B': '0',
-    'R': '1'
+    'R': '1',
+    'S': '2'
 }
 
 
@@ -59,7 +60,7 @@ def read_states_from_stdout(proc):
         for i in range(9):
             line = proc.stdout.readline().rstrip()
             first_char = line[:1].decode()
-            if first_char in ['b', 'r', 'B', 'R']:
+            if first_char in ['b', 'r', 'B', 'R', 'S']:
                 return [first_char] * 9
             elif line[:1] != '?'.encode():
                 this_line = [int(x) for x in line.decode() if x not in ' \n']
@@ -71,8 +72,7 @@ def read_states_from_stdout(proc):
 
 
 def pick_state(states):
-    diffed = pick_move_by_diff(INIT_STATE, states)
-    return states.index(diffed) if diffed else states.index(pick_move_random(states))
+    return random.randint(0, len(states) - 1)
 
 
 def detect_win(states):
@@ -118,10 +118,12 @@ def play_game():
     if DEBUG:
         proc = subprocess.Popen(['python3', 'random_states.py'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     else:
+        print("calling java")
         proc = subprocess.Popen(['java', 'Game', 'log_moves.txt'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     while True:
         new_states = read_states_from_stdout(proc)
+        print('got states', len(new_states))
         if detect_win(new_states):
             winner_char = str(new_states[0][0][0])
             winner = WIN_LOOKUP[winner_char]
@@ -131,9 +133,6 @@ def play_game():
             choice = pick_state(new_states)
             history.append(new_states[choice])
             print_index_to_proc(proc, choice)
-            counter += 1
-            if DEBUG and counter > 5:
-                exit(0)
 
 
 if __name__ == '__main__':
